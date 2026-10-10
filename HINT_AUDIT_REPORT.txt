@@ -1,0 +1,25 @@
+AVITECH TEST AI — Coding Hint Lifeline Audit
+
+Scope
+- 12,000 coding questions
+- 15 languages/categories
+- 800 questions per category
+
+Validation
+- Empty hints: 0
+- Generic fallback hints: 0
+- Obsolete generic hint phrases: 0
+- Every question has a non-empty Level-1 hint field
+- Hints are generated from the question text/category and language/framework
+- Hint output is directional: function/method/API/selector/data structure/algorithm direction, without a complete solution
+
+Categories
+HTML, CSS, JavaScript, Bootstrap, Tailwind CSS, React, Vanilla JS,
+Python, Java, C, C++, C#, .NET, PHP, Node.js
+
+UI behavior retained from the latest coding-test build:
+- Hint is hidden until the Hint lifeline is used.
+- Hint is unavailable while AI question speech is active.
+- Hint is one-use per coding test.
+- Check Error lifeline remains removed.
+- Editor footer text about auto-indent/auto-close remains removed.

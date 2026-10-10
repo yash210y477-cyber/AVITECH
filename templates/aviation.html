@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AVITECH | Aviation</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+
+        /* =========================================
+           RESET
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================
+           BODY
+        ========================================= */
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: "Inter", sans-serif;
+
+            color: #172033;
+
+            overflow-x: hidden;
+
+            background:
+
+                radial-gradient(
+                    circle at 8% 10%,
+                    rgba(130, 215, 255, 0.30),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 92% 12%,
+                    rgba(190, 165, 255, 0.28),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(145, 255, 210, 0.20),
+                    transparent 35%
+                ),
+
+                #f8fbff;
+        }
+
+
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        nav {
+
+            width: 92%;
+
+            height: 70px;
+
+            margin: 20px auto;
+
+            padding: 0 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background:
+                rgba(255,255,255,0.80);
+
+            backdrop-filter: blur(18px);
+
+            border:
+                1px solid rgba(220,230,242,0.9);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(55,75,110,0.08);
+        }
+
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 24px;
+
+            font-weight: 900;
+
+            letter-spacing: -1px;
+        }
+
+
+        .logo-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #665cff,
+                    #42c9ff
+                );
+
+            color: white;
+
+            font-size: 19px;
+
+            box-shadow:
+                0 8px 20px
+                rgba(95,100,240,0.20);
+        }
+
+
+        .logo span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #665cff,
+                    #00a9ff,
+                    #ff69b4
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+
+        /* =========================================
+           NAV RIGHT
+        ========================================= */
+
+        .nav-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .language {
+
+            padding: 10px 17px;
+
+            border:
+                1px solid #d9e3ef;
+
+            border-radius: 14px;
+
+            background: white;
+
+            color: #263248;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+
+        .language:hover {
+
+            border-color: #8b7cff;
+
+            transform: translateY(-2px);
+        }
+
+
+        .home {
+
+            padding: 10px 18px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background: #172033;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+
+        .home:hover {
+
+            transform: translateY(-2px);
+
+            background: #303a52;
+        }
+
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .main {
+
+            width: 92%;
+
+            max-width: 1250px;
+
+            margin:
+                35px auto 0;
+
+            text-align: center;
+        }
+
+
+
+        /* =========================================
+           BACK BUTTON
+        ========================================= */
+
+        .back {
+
+            display: block;
+
+            width: fit-content;
+
+            margin-bottom: 25px;
+
+            padding: 10px 17px;
+
+            border:
+                1px solid #d6e1ed;
+
+            border-radius: 14px;
+
+            background: white;
+
+            color: #27334a;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 18px
+                rgba(45,60,90,0.06);
+
+            transition: 0.25s;
+        }
+
+
+        .back:hover {
+
+            transform:
+                translateX(-4px);
+
+            border-color:
+                #8a7cff;
+
+            color:
+                #625bf6;
+        }
+
+
+
+        /* =========================================
+           MINI TITLE
+        ========================================= */
+
+        .mini-title {
+
+            display: inline-block;
+
+            padding: 7px 17px;
+
+            margin-bottom: 16px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(108,99,255,0.10),
+                    rgba(0,190,255,0.10),
+                    rgba(255,105,180,0.10)
+                );
+
+            border:
+                1px solid
+                rgba(120,120,220,0.18);
+
+            font-size: 11px;
+
+            letter-spacing: 3px;
+
+            font-weight: 800;
+
+            color: #77718d;
+
+            box-shadow:
+                0 5px 18px
+                rgba(80,80,150,0.06);
+        }
+
+
+
+        /* =========================================
+           MAIN HEADING
+        ========================================= */
+
+        .hero-heading {
+
+            font-size:
+                clamp(42px, 6vw, 68px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+
+            font-weight: 900;
+
+            color: #20273a;
+
+            margin-bottom: 17px;
+
+            text-shadow:
+                0 5px 20px
+                rgba(70,80,120,0.08);
+        }
+
+
+        .hero-heading span {
+
+            background: linear-gradient(90deg, #163d8f, #3158ed, #a33ee8);
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: auto;
+            animation: none;
+            filter: none;
+        }
+
+        /* =========================================
+           SUBTITLE
+        ========================================= */
+
+        .subtitle {
+
+            max-width: 680px;
+
+            margin: auto;
+
+            color: #6c7689;
+
+            font-size: 16px;
+
+            line-height: 1.65;
+        }
+
+
+
+        /* =========================================
+           AVIATION TOPICS AREA
+        ========================================= */
+
+        .aviation-section {
+
+            width: 100%;
+
+            max-width: 1250px;
+
+            margin:
+                42px auto 0;
+
+            padding:
+                24px 0;
+
+            overflow: hidden;
+
+            border:
+                1.5px solid
+                #d3e0ee;
+
+            border-radius: 28px;
+
+            background:
+                rgba(255,255,255,0.60);
+
+            backdrop-filter:
+                blur(15px);
+
+            box-shadow:
+                0 18px 50px
+                rgba(50,75,110,0.08);
+        }
+
+
+
+        /* =========================================
+           MARQUEE
+        ========================================= */
+
+        .marquee {
+
+            width: max-content;
+
+            display: flex;
+
+            align-items: center;
+
+            margin:
+                10px auto;
+
+            animation:
+                moveLeft
+                16s
+                linear
+                infinite;
+        }
+
+
+        .marquee.reverse {
+
+            animation:
+                moveRight
+                18s
+                linear
+                infinite;
+        }
+
+
+        /* Keep enough repeated cards across the full panel so the marquee
+           never exposes an empty/blank area during its loop. */
+        .aviation-section .marquee {
+            width: max-content;
+            min-width: 0;
+            justify-content: flex-start;
+            margin-left: 0;
+            margin-right: 0;
+            will-change: transform;
+        }
+
+
+        .marquee:hover {
+
+            animation-play-state:
+                paused;
+        }
+
+
+
+        /* =========================================
+           MOVEMENT
+        ========================================= */
+
+        @keyframes moveLeft {
+
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+
+        }
+
+
+        @keyframes moveRight {
+
+            from {
+                transform: translateX(-50%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+
+        }
+
+
+
+        /* =========================================
+           AVIATION CARD
+        ========================================= */
+
+        .aviation-card {
+
+            min-width: 145px;
+
+            height: 72px;
+
+            margin:
+                0 7px;
+
+            padding:
+                8px 15px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            flex-shrink: 0;
+
+            background:
+                rgba(255,255,255,0.97);
+
+            border:
+                1.5px solid
+                #cbdceb;
+
+            border-radius: 17px;
+
+            box-shadow:
+                0 6px 18px
+                rgba(55,105,160,0.07);
+
+            transition:
+                0.3s ease;
+        }
+
+
+        .aviation-card {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .aviation-card.selected {
+            transform: translateY(-4px) scale(1.03);
+            border-color: #897cff;
+            box-shadow: 0 0 0 3px rgba(137,124,255,0.16), 0 10px 24px rgba(55,105,160,0.14);
+        }
+
+        .aviation-card.selected .topic-name {
+            font-weight: 800;
+        }
+
+        .aviation-card:hover {
+
+            transform:
+                translateY(-6px)
+                scale(1.05);
+
+            border-color:
+                #897cff;
+
+            box-shadow:
+                0 12px 27px
+                rgba(100,90,220,0.15);
+        }
+
+
+        .aviation-card i {
+
+            font-size: 25px;
+
+            line-height: 1;
+        }
+
+
+        .topic-name {
+
+            font-size: 11.5px;
+
+            font-weight: 700;
+
+            color: #29354a;
+
+            white-space: nowrap;
+        }
+
+
+
+        /* =========================================
+           ICON COLORS
+        ========================================= */
+
+        .blue {
+            color: #3182ce;
+        }
+
+        .purple {
+            color: #765cff;
+        }
+
+        .orange {
+            color: #f39a3f;
+        }
+
+        .green {
+            color: #39b98a;
+        }
+
+        .pink {
+            color: #ed6da8;
+        }
+
+        .cyan {
+            color: #20a9d8;
+        }
+
+        .red {
+            color: #e86666;
+        }
+
+        .yellow {
+            color: #e4b63f;
+        }
+
+        .navy {
+            color: #344b73;
+        }
+
+
+
+        /* =========================================
+           START TEST BOX
+        ========================================= */
+
+        .start-box {
+
+            width: 90%;
+
+            max-width: 1050px;
+
+            margin:
+                32px auto 45px;
+
+            padding:
+                20px 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            background:
+                rgba(255,255,255,0.84);
+
+            border:
+                1.5px solid
+                #d2dfed;
+
+            border-radius: 21px;
+
+            box-shadow:
+                0 12px 35px
+                rgba(45,65,100,0.07);
+        }
+
+
+        .start-text {
+
+            text-align: left;
+        }
+
+
+        .start-text h3 {
+
+            font-size: 17px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .start-text p {
+
+            font-size: 13px;
+
+            color: #748095;
+        }
+
+
+        .start-btn {
+
+            border: none;
+
+            padding:
+                13px 28px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #665cff,
+                    #00a9ff
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 9px 22px
+                rgba(80,100,230,0.20);
+
+            transition:
+                0.25s;
+        }
+
+
+        .start-btn:hover {
+
+            transform:
+                translateY(-3px)
+                scale(1.03);
+
+            box-shadow:
+                0 14px 28px
+                rgba(80,100,230,0.27);
+        }
+
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media(max-width:700px) {
+
+            nav {
+
+                width: 94%;
+
+                padding:
+                    0 15px;
+            }
+
+
+            .logo {
+
+                font-size: 19px;
+            }
+
+
+            .home {
+
+                display: none;
+            }
+
+
+            .main {
+
+                width: 94%;
+            }
+
+
+            .hero-heading {
+
+                font-size: 38px;
+
+                letter-spacing: -2px;
+            }
+
+
+            .subtitle {
+
+                font-size: 14px;
+            }
+
+
+            .aviation-section {
+
+                border-radius: 22px;
+            }
+
+
+            .aviation-card {
+
+                min-width: 125px;
+
+                height: 64px;
+
+                margin:
+                    0 5px;
+            }
+
+
+            .aviation-card i {
+
+                font-size: 22px;
+            }
+
+
+            .topic-name {
+
+                font-size: 10.5px;
+            }
+
+
+            .start-box {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .start-text {
+
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='react-navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='ai-page-greeting.css', v='10') }}">
+
+<style id="aviation-movement-final-fix">
+.aviation-moving-section{
+    width:100% !important;
+    overflow:hidden !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:12px !important;
+    padding:24px 0 !important;
+    box-sizing:border-box !important;
+}
+.aviation-moving-viewport{
+    width:100% !important;
+    overflow:hidden !important;
+    position:relative !important;
+}
+.aviation-moving-track{
+    display:flex !important;
+    width:max-content !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    will-change:transform !important;
+}
+.aviation-moving-set{
+    display:flex !important;
+    flex:0 0 auto !important;
+    align-items:center !important;
+    gap:14px !important;
+    padding-right:14px !important;
+}
+.aviation-moving-set .aviation-card{
+    flex:0 0 auto !important;
+    margin:0 !important;
+}
+.aviation-moving-track.move-left{
+    animation:aviationSlideLeft 18s linear infinite !important;
+}
+.aviation-moving-track.move-right{
+    animation:aviationSlideRight 18s linear infinite !important;
+}
+@keyframes aviationSlideLeft{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(-50%,0,0);}
+}
+@keyframes aviationSlideRight{
+    from{transform:translate3d(-50%,0,0);}
+    to{transform:translate3d(0,0,0);}
+}
+.aviation-moving-section:hover .aviation-moving-track{
+    animation-play-state:paused !important;
+}
+@media(max-width:900px){
+    .aviation-moving-set{gap:8px !important;padding-right:8px !important;}
+    .aviation-moving-track.move-left,
+    .aviation-moving-track.move-right{
+        animation-duration:15s !important;
+    }
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================= -->
+
+    <div id="react-navbar"></div>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================= -->
+
+    <main class="main">
+
+
+        <button class="back"
+                onclick="history.back()">
+
+            ← Back
+
+        </button>
+
+
+
+        <div class="mini-title">
+
+            CHOOSE YOUR PATH
+
+        </div>
+
+
+
+        <h1 class="hero-heading">
+
+            TEST YOUR
+            <span>AVIATION KNOWLEDGE</span>
+
+        </h1>
+
+
+
+        <p class="subtitle">
+
+            Explore the world of aviation,
+            challenge your knowledge and
+            see how well you understand the skies.
+
+        </p>
+
+
+
+        <!-- =====================================
+             AVIATION TOPICS
+        ====================================== -->
+
+        <section class="aviation-section aviation-moving-section">
+<div class="aviation-moving-viewport">
+  <div class="aviation-moving-track move-left">
+    <div class="aviation-moving-set"><div class="aviation-card" data-topic="Aviation Fundamentals" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-book purple"></i>
+    <span class="topic-name">Aviation Fundamentals</span>
+</div><div class="aviation-card" data-topic="Aircraft & Aircraft Systems" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-gears navy"></i>
+    <span class="topic-name">Aircraft & Aircraft Systems</span>
+</div><div class="aviation-card" data-topic="Flight Operations" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-plane-up blue"></i>
+    <span class="topic-name">Flight Operations</span>
+</div><div class="aviation-card" data-topic="Airport Management" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-building cyan"></i>
+    <span class="topic-name">Airport Management</span>
+</div><div class="aviation-card" data-topic="Aviation Safety" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-shield-halved green"></i>
+    <span class="topic-name">Aviation Safety</span>
+</div><div class="aviation-card" data-topic="Aviation Security" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-user-shield red"></i>
+    <span class="topic-name">Aviation Security</span>
+</div><div class="aviation-card" data-topic="Aviation Regulations & Law" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-scale-balanced purple"></i>
+    <span class="topic-name">Aviation Regulations & Law</span>
+</div><div class="aviation-card" data-topic="Airline Operations" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-plane blue"></i>
+    <span class="topic-name">Airline Operations</span>
+</div></div>
+    <div class="aviation-moving-set" aria-hidden="true"><div class="aviation-card" data-topic="Aviation Fundamentals" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-book purple"></i>
+    <span class="topic-name">Aviation Fundamentals</span>
+</div><div class="aviation-card" data-topic="Aircraft & Aircraft Systems" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-gears navy"></i>
+    <span class="topic-name">Aircraft & Aircraft Systems</span>
+</div><div class="aviation-card" data-topic="Flight Operations" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-plane-up blue"></i>
+    <span class="topic-name">Flight Operations</span>
+</div><div class="aviation-card" data-topic="Airport Management" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-building cyan"></i>
+    <span class="topic-name">Airport Management</span>
+</div><div class="aviation-card" data-topic="Aviation Safety" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-shield-halved green"></i>
+    <span class="topic-name">Aviation Safety</span>
+</div><div class="aviation-card" data-topic="Aviation Security" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-user-shield red"></i>
+    <span class="topic-name">Aviation Security</span>
+</div><div class="aviation-card" data-topic="Aviation Regulations & Law" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-scale-balanced purple"></i>
+    <span class="topic-name">Aviation Regulations & Law</span>
+</div><div class="aviation-card" data-topic="Airline Operations" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-plane blue"></i>
+    <span class="topic-name">Airline Operations</span>
+</div></div>
+  </div>
+</div>
+<div class="aviation-moving-viewport">
+  <div class="aviation-moving-track move-right">
+    <div class="aviation-moving-set"><div class="aviation-card" data-topic="Ground Handling" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-dolly orange"></i>
+    <span class="topic-name">Ground Handling</span>
+</div><div class="aviation-card" data-topic="Cargo" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-box yellow"></i>
+    <span class="topic-name">Cargo</span>
+</div><div class="aviation-card" data-topic="Aviation Communication" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-tower-broadcast cyan"></i>
+    <span class="topic-name">Aviation Communication</span>
+</div><div class="aviation-card" data-topic="Human Factors in Aviation" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-users navy"></i>
+    <span class="topic-name">Human Factors in Aviation</span>
+</div><div class="aviation-card" data-topic="Emergency Procedures" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-triangle-exclamation red"></i>
+    <span class="topic-name">Emergency Procedures</span>
+</div><div class="aviation-card" data-topic="Aviation General Knowledge" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-globe green"></i>
+    <span class="topic-name">Aviation General Knowledge</span>
+</div><div class="aviation-card" data-topic="Cabin Crew Duties and Responsibilities" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-user-tie purple"></i>
+    <span class="topic-name">Cabin Crew Duties and Responsibilities</span>
+</div><div class="aviation-card" data-topic="Aircraft Types" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-plane-circle-check blue"></i>
+    <span class="topic-name">Aircraft Types</span>
+</div></div>
+    <div class="aviation-moving-set" aria-hidden="true"><div class="aviation-card" data-topic="Ground Handling" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-dolly orange"></i>
+    <span class="topic-name">Ground Handling</span>
+</div><div class="aviation-card" data-topic="Cargo" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-box yellow"></i>
+    <span class="topic-name">Cargo</span>
+</div><div class="aviation-card" data-topic="Aviation Communication" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-tower-broadcast cyan"></i>
+    <span class="topic-name">Aviation Communication</span>
+</div><div class="aviation-card" data-topic="Human Factors in Aviation" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-users navy"></i>
+    <span class="topic-name">Human Factors in Aviation</span>
+</div><div class="aviation-card" data-topic="Emergency Procedures" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-triangle-exclamation red"></i>
+    <span class="topic-name">Emergency Procedures</span>
+</div><div class="aviation-card" data-topic="Aviation General Knowledge" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-globe green"></i>
+    <span class="topic-name">Aviation General Knowledge</span>
+</div><div class="aviation-card" data-topic="Cabin Crew Duties and Responsibilities" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-user-tie purple"></i>
+    <span class="topic-name">Cabin Crew Duties and Responsibilities</span>
+</div><div class="aviation-card" data-topic="Aircraft Types" onclick="selectAviationTopic(this)">
+    <i class="fa-solid fa-plane-circle-check blue"></i>
+    <span class="topic-name">Aircraft Types</span>
+</div></div>
+  </div>
+</div>
+</section>
+
+
+
+        <!-- =========================================
+             START BOX
+        ========================================= -->
+
+        <div class="start-box">
+
+
+            <div class="start-text">
+
+                <h3>
+                    ✈️ Ready for takeoff?
+                </h3>
+
+                <p>
+                    Choose your aviation challenge and test yourself.
+                </p>
+
+            </div>
+
+
+            <button class="start-btn"
+                    onclick="startTest()">
+
+                Start Test →
+
+            </button>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+
+    <script>
+
+
+        function goHome() {
+
+            window.location.href =
+                "/";
+
+        }
+
+
+        const AVIATION_TOPICS = [
+            "Aviation Fundamentals",
+            "Aircraft & Aircraft Systems",
+            "Flight Operations",
+            "Airport Management",
+            "Aviation Safety",
+            "Aviation Security",
+            "Aviation Regulations & Law",
+            "Airline Operations",
+            "Ground Handling",
+            "Cargo",
+            "Aviation Communication",
+            "Human Factors in Aviation",
+            "Emergency Procedures",
+            "Aviation General Knowledge",
+            "Cabin Crew Duties and Responsibilities",
+            "Aircraft Types"
+        ];
+
+        let selectedAviationTopic = "";
+
+        function selectAviationTopic(card) {
+            const topic = card && card.dataset ? card.dataset.topic : "";
+            if (!AVIATION_TOPICS.includes(topic)) return;
+            selectedAviationTopic = topic;
+            document.querySelectorAll('.aviation-card').forEach(el => {
+                el.classList.toggle('selected', el.dataset.topic === topic);
+            });
+            const startButton = document.querySelector('.start-btn');
+            if (startButton) startButton.textContent = "Start " + topic + " →";
+        }
+
+        function startTest() {
+            if (!selectedAviationTopic) {
+                const first = document.querySelector('.aviation-card');
+                if (first) selectAviationTopic(first);
+            }
+            const mode = new URLSearchParams(window.location.search).get("mode");
+            if (mode === "theory") {
+                window.location.href = "/theory?bank=aviation&subject=" + encodeURIComponent(selectedAviationTopic);
+            } else {
+                window.location.href = "/quiz?bank=aviation&subject=" + encodeURIComponent(selectedAviationTopic);
+            }
+        }
+
+
+    </script>
+
+
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="{{ url_for('static', filename='react-navbar.js') }}"></script>
+
+<script src="{{ url_for('static', filename='ai-page-greeting.js', v='10') }}"></script>
+<script src="{{ url_for('static', filename='anti-copy.js') }}"></script>
+<script src="{{ url_for('static', filename='csrf.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='responsive.css', v='2') }}">
+</body>
+
+</html>

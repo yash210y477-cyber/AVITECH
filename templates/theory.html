@@ -1,0 +1,785 @@
+<!doctype html><html lang="en"><head>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}"><meta charset="UTF-8"><meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>AVITECH | Theory Test</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="{{ url_for("static", filename="quiz.css") }}"><style>
+/* THEORY: same MCQ shell. Written-answer area remains intentionally unchanged. */
+.question-row h3{font-size:27px!important;line-height:1.35;color:#102b66}.question-row #counter{flex:none;min-width:82px;text-align:center;padding:10px 18px;border-radius:19px;background:#e7e2ffb8;color:#4f55d9;font-size:16px}.question-text{display:inline-block;margin-top:8px}
+.answer-section{margin-top:23px}
+.answer-title{font-size:17px;font-weight:800;color:#15346f;margin-bottom:10px}
+/* Exact original textarea treatment — do not alter the written-answer area. */
+.answer-section textarea{width:100%;min-height:120px;resize:vertical;border:2px solid #e2e8f0;border-radius:14px;padding:15px;font-family:Arial,sans-serif;font-size:16px;outline:none;background:#fff}
+.answer-section textarea:focus{border-color:#2563eb}
+.answer-section textarea:disabled{background:#f1f5f9;cursor:not-allowed}
+.record-section{margin-top:18px;padding:20px;background:rgba(255,255,255,.55);border:1px solid #d6e3f3;border-radius:17px}
+.record-title{font-weight:800;color:#15346f;margin-bottom:12px}
+.record-status{color:#6d8fd1;font-size:14px;min-height:20px;margin-top:10px}
+.recording-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#dc2626;margin-right:6px;animation:pulse 1s infinite}
+@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+.theory-controls{margin-top:25px!important}
+.theory-controls .btn{height:58px;border-radius:17px;padding:0 30px;font-size:17px;font-weight:700;cursor:pointer}
+.theory-controls .change,.theory-controls .skip,.theory-controls .extra{border:1px solid #7a63ff;background:#ffffff70;color:#5345e9}
+.theory-controls .submit,.theory-controls .next{margin-left:auto;min-width:270px;border:0!important;color:#fff!important;background:linear-gradient(135deg,#7c3aed 0%,#a855f7 48%,#c026d3 100%)!important;box-shadow:0 8px 22px rgba(124,58,237,.28),0 0 0 1px rgba(168,85,247,.12)!important;font-weight:800!important;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+.theory-controls .submit.ready-next,.theory-controls .next.ready-next{background:linear-gradient(135deg,#7c3aed 0%,#a855f7 48%,#c026d3 100%)!important;color:#fff!important;border:0!important;box-shadow:0 8px 22px rgba(124,58,237,.28),0 0 0 1px rgba(168,85,247,.12)!important;font-weight:800!important}
+.theory-controls .submit:hover:not(:disabled),.theory-controls .next:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 11px 28px rgba(124,58,237,.30)}
+.theory-controls .next{margin-left:auto}
+.theory-controls .btn:disabled{opacity:.48;cursor:not-allowed}
+#skipBtn.skip-exhausted,#skipBtn.skip-exhausted:disabled{color:#ef3340!important;border-color:#ef3340!important;background:#fff1f3!important;opacity:1!important}
+.feedback.explain{margin-top:25px!important;min-height:102px;padding:20px 24px!important;display:none;align-items:flex-start;gap:25px;border:1px solid #cdddf2;border-radius:17px;background:linear-gradient(100deg,#f4f9ffb8,#f8f1ffb8);box-shadow:none}
+.feedback.explain>b{width:55px;min-width:55px;height:55px;border-radius:50%;display:grid;place-items:center;background:#edf0ff;font-size:27px}
+.feedback.explain .result-content{flex:1;border-left:2px solid #7463ee;padding-left:25px;padding-top:2px}
+.feedback.explain .feedback-title{font-size:19px;font-weight:800;color:#263e76;margin:0 0 10px}
+.feedback.explain .result-divider{height:1px;background:#dbe5f0;margin:12px 0}
+.feedback.explain #explanationHeading{font-size:17px;color:#7b43ee;margin:14px 0 7px;font-weight:800}
+.feedback.explain .feedback-text{color:#526a92;line-height:1.65;font-size:14px}
+@media(max-width:900px){.theory-controls{flex-wrap:wrap!important}.theory-controls .submit{margin-left:0}.hero{flex-wrap:wrap}.heroBot{width:100px}.hero h1{font-size:28px}.timer{width:120px;height:120px}.feedback.explain{align-items:flex-start}}
+@media(max-width:650px){.hero{flex-direction:column;text-align:center;padding:20px}.heroBot{height:90px}.hero h1{font-size:24px}.hero p{font-size:14px}.timer{margin:auto}.quiz{padding:18px 12px}.theory-controls{gap:10px!important}.theory-controls .btn{flex:1;padding:0 14px;font-size:14px}.theory-controls .submit,.theory-controls .next{width:100%;min-width:0;margin-left:0}.feedback.explain{padding:15px!important}.feedback.explain .result-content{padding-left:16px}}
+
+/* THEORY SYNC: match the latest quiz timer/lifeline behavior without changing the written-answer area. */
+.question-row{display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:24px!important;}
+.question-heading{min-width:0;flex:1;}
+.question-side{display:flex!important;flex-direction:column!important;align-items:center!important;gap:14px!important;flex:none!important;padding-top:0!important;}
+.question-row #counter{margin:0!important;}
+.question-side .timer{width:78px!important;height:78px!important;border-radius:50%!important;background:linear-gradient(145deg,#f7fbff,#edf4ff)!important;border:3px solid #b8cdf0!important;box-shadow:0 5px 16px rgba(64,96,160,.16),0 0 0 5px rgba(108,92,231,.07)!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;order:0!important;margin-top:-7px!important;}
+.question-side .timer:before{display:none!important;}
+.question-side .timer span,.question-side .timer small{display:none!important;}
+.question-side .timer strong{font-size:20px!important;color:#244b91!important;font-weight:800!important;margin:0!important;position:relative!important;}
+.question-side .timer.timer-danger{border-color:#ef3340!important;background:#fff1f3!important;box-shadow:0 5px 18px rgba(239,51,64,.20),0 0 0 5px rgba(239,51,64,.08)!important;animation:theoryTimerDanger 1s ease-in-out infinite!important;}
+.question-side .timer.timer-danger strong{color:#ef3340!important;}
+@keyframes theoryTimerDanger{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.07);opacity:.72}}
+.theory-controls .btn{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;white-space:nowrap!important;}
+.theory-controls .change.lifeline-used,.theory-controls .extra.lifeline-used,#skipBtn.skip-exhausted{color:#ef3340!important;border-color:#ef3340!important;background:#fff1f3!important;opacity:1!important;cursor:not-allowed!important;box-shadow:none!important;}
+.theory-controls .change.lifeline-used:hover,.theory-controls .extra.lifeline-used:hover,#skipBtn.skip-exhausted:hover{cursor:not-allowed!important;transform:none!important;filter:none!important;}
+.theory-controls .btn:disabled{cursor:not-allowed!important;}
+@media(max-width:900px){.question-row{align-items:flex-start!important}.question-side .timer{width:72px!important;height:72px!important}.question-side .timer strong{font-size:18px!important;}}
+@media(max-width:650px){.question-row{gap:12px!important}.question-side{gap:9px!important}.question-side .timer{width:64px!important;height:64px!important}.question-side .timer strong{font-size:16px!important;}}
+
+.feedback.explain .theory-answer-highlight{display:inline-block;padding:9px 13px;border-radius:10px;background:#f0fff7;border:1px solid #c7ead8;color:#146c49;font-size:15px;margin:2px 0 8px}
+.feedback.explain .theory-detail-block{margin-top:12px;padding:14px 16px;border:1px solid #dbe5f0;border-radius:14px;background:rgba(255,255,255,.72)}
+.feedback.explain .theory-detail-heading{font-size:14px;font-weight:900;color:#5145d9;margin-bottom:7px}
+.feedback.explain .theory-detail-block p{margin:0;color:#526a92;line-height:1.7;font-size:14px}
+@media(max-width:650px){.feedback.explain .theory-detail-block{padding:12px}.feedback.explain .theory-detail-block p{font-size:13px;line-height:1.6}}
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='react-navbar.css', v='8') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='ai-page-greeting.css', v='10') }}">
+<style>
+/* Shared eye-detection / proctoring UI */
+.proctor-panel{position:fixed;right:18px;bottom:18px;z-index:1000;width:230px;background:rgba(10,18,35,.94);color:#fff;border:1px solid rgba(120,170,255,.25);border-radius:16px;padding:10px;box-shadow:0 16px 40px rgba(0,0,0,.28);backdrop-filter:blur(12px)}
+.proctor-head{display:flex;justify-content:space-between;gap:8px;font-size:10px;font-weight:800;letter-spacing:.5px;margin-bottom:8px}.proctor-head span:last-child{font-weight:600;opacity:.75;text-transform:none}
+#proctorVideo{display:block;width:100%;height:135px;object-fit:cover;border-radius:11px;background:#050811;transform:scaleX(-1)}
+.proctor-warning{min-height:0;color:#ffb4b4;font-size:11px;line-height:1.35;margin-top:6px}.proctor-warning.show{padding:7px;border-radius:8px;background:rgba(255,70,90,.12)}
+.proctor-stats{display:flex;justify-content:space-between;margin-top:7px;font-size:10px;opacity:.82}#objectDetectionBadge{margin-top:7px;padding:6px 8px;border-radius:8px;font-size:10.5px;line-height:1.35;font-weight:700;background:rgba(255,70,90,.16);color:#ffb4b4;border:1px solid rgba(255,120,140,.35)}#objectDetectionBadge[hidden]{display:none}
+.test-over-modal{position:fixed;inset:0;z-index:3000;display:grid;place-items:center;background:rgba(11,18,34,.72);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.test-over-modal[hidden]{display:none}
+.test-over-card{width:min(472px,90vw);padding:36px 38px 34px;border-radius:23px;text-align:center;background:rgba(255,255,255,.98);color:#183873;box-shadow:0 30px 100px rgba(0,0,0,.32);border:1px solid rgba(224,231,242,.95)}
+.test-over-icon{width:68px;height:68px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:#fff0f3;color:#ff3e5d;font-size:34px;font-weight:900;line-height:1}
+.test-over-card h2{margin:0 0 7px;color:#183873;font-size:29px;line-height:1.15;font-weight:900;letter-spacing:-.5px}
+.test-over-card p{margin:0 0 10px;color:#ff3858;font-size:17px;font-weight:850}.test-over-card small{display:block;color:#7385a1;font-size:14px;line-height:1.45}
+.proctor-terminated .quiz,.proctor-terminated .controls,.proctor-terminated .coding-quiz-shell{filter:blur(1px);pointer-events:none}
+@media(max-width:700px){.proctor-panel{right:10px;bottom:10px;width:180px}.proctor-panel #proctorVideo{height:105px}}
+</style>
+<style>#stopRecord{display:none!important}.record-section .start-record{background:#ef3340!important;color:#fff!important;border:0!important;box-shadow:0 8px 20px rgba(239,51,64,.20)!important}.record-section .start-record.recording{background:#ef3340!important;color:#fff!important}.record-section .play-record{background:rgba(255,255,255,.72)!important;color:#15346f!important;border:1px solid #d4e1f0!important}.record-section .buttons{display:flex;gap:18px;flex-wrap:wrap}.record-section .btn{height:58px;border-radius:17px;padding:0 30px;font-size:17px;font-weight:700}.record-section .btn:disabled{opacity:.48!important}</style>
+</head><body>
+<div id="proctorPanel" class="proctor-panel">
+  <div class="proctor-head"><span>● PROCTORING</span><span id="proctorStatus">Starting camera…</span></div>
+  <video id="proctorVideo" autoplay muted playsinline></video>
+  <div id="proctorWarning" class="proctor-warning" aria-live="assertive"></div>
+  <div id="objectDetectionBadge" role="status" hidden></div>
+  <div class="proctor-stats"><span>Faces: <b id="faceCount">0</b></span><span>Look-away: <b id="lookCount">0</b></span></div>
+</div>
+<div id="testOverModal" class="test-over-modal" hidden>
+  <div class="test-over-card">
+    <div class="test-over-icon">!</div>
+    <h2>Test Terminated</h2>
+    <p>Suspicious activities detected</p>
+    <small id="terminationReason"></small>
+  </div>
+</div>
+
+<div id="react-navbar"></div>
+<main>
+<section class="quiz"><article>
+<div class="question-row"><div class="question-heading"><h3 id="question">Question 1: Loading...</h3></div><div class="question-side"><div class="timer" data-placement="above-counter"><span>◷</span><strong id="timer">02:00</strong></div><strong id="counter">1 / 15</strong></div></div>
+<div class="robot-status" id="robotStatus" style="display:none">🤖 Preparing question...</div>
+</article>
+<div class="answer-section"><textarea id="answer" placeholder="You can type your answer here..." disabled></textarea></div>
+<div class="record-section"><div class="record-title">🎙️ Voice Answer</div><div class="buttons"><button class="btn start-record" id="startRecord" disabled>🔴 Start Recording</button><button class="btn stop-record" id="stopRecord" disabled>⏹️ Stop Recording</button><button class="btn play-record" id="playRecord" disabled>🔊 Play Recording</button></div><div class="record-status" id="recordStatus">🎙️ Recording is locked until the robot finishes speaking.</div><audio id="audioPlayer" controls style="display:none;width:100%;margin-top:15px"></audio></div>
+<div class="controls theory-controls"><button class="btn change" id="changeBtn" disabled>🔄 &nbsp; Change the Question</button><button class="btn skip" id="skipBtn" disabled>|◀ &nbsp; Skip (3 left)</button><button class="btn extra" id="extraBtn" disabled>⏱️ &nbsp; Extra Time +30 sec (3)</button><button class="btn submit" id="submitBtn" disabled>Submit Answer &nbsp; →</button></div>
+<div class="feedback explain" id="feedback"><b id="resultIcon">💡</b><div class="result-content"><h3 class="feedback-title" id="feedbackTitle">Explanation of question</h3><div id="answerReview"></div><div class="result-divider"></div><h4 id="explanationHeading">Explanation:</h4><div class="feedback-text" id="feedbackText">Your theory answer will be recorded here.</div></div></div>
+</section></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+<script>window.tf = window.faceapi && window.faceapi.tf;</script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2/dist/coco-ssd.min.js"></script>
+<script src="{{ url_for('static', filename='proctoring.js', v='permission-fast-20261010') }}"></script>
+<script>
+/* ==========================================================
+   THEORY TEST - IT + AVIATION
+   Uses the existing JSON filenames exactly as supplied.
+   IT: It_theory_questions.json
+   Aviation: aviation_theory.json
+========================================================== */
+
+const params = new URLSearchParams(window.location.search);
+
+const rawSelection =
+  params.get("subject") ||
+  params.get("language") ||
+  params.get("id") ||
+  "python";
+
+const aliases = {
+  py:"python", python3:"python", python_id:"python", pythonid:"python",
+  java_id:"java", javaid:"java",
+  c_id:"c", cid:"c",
+  "c++":"c++", cplusplus:"c++", cxx:"c++", cpp_id:"c++", cppid:"c++",
+  js:"javascript", node:"node.js", nodejs:"node.js",
+  javascript_id:"javascript", javascriptid:"javascript",
+  mysql:"mysql", mysql_id:"mysql", mysqlid:"mysql", sql:"mysql", sql_id:"mysql", sqlid:"mysql",
+  tailwind:"tailwind css", "tailwind css":"tailwind css"
+};
+
+const bank = (params.get("bank") || "it").toLowerCase() === "aviation"
+  ? "aviation" : "it";
+
+const selection = String(rawSelection).trim();
+const normalizedSelection =
+  aliases[selection.toLowerCase()] || selection.toLowerCase();
+
+let THEORY = {};
+let questionPool = [];
+let questions = [];
+let currentIndex = 0;
+let answered = false;
+let testEnded = false;
+let speechFinished = true;
+let skipUsed = 0;
+let extraUsed = 0;
+let changeUsed = false;
+let timeLeft = 120;
+let timerId = null;
+let mediaRecorder = null;
+let audioChunks = [];
+let audioBlob = null;
+let speechToken = 0;
+let theoryAttemptId = null;
+let theoryStartedAt = null;
+
+async function startTheoryAttempt(){
+  theoryStartedAt = new Date().toISOString();
+  try{
+    const r = await fetch('/api/attempt/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      bank, subject:selection, started_at:theoryStartedAt
+    })});
+    const d = await r.json();
+    if(r.ok && d.ok){
+      theoryAttemptId = d.attempt_id;
+      localStorage.setItem('lastAttemptId', String(theoryAttemptId));
+      // Keep the selected subject attached to this exact attempt for reliable
+      // result rendering even if an older database row contains stale metadata.
+      try {
+        localStorage.setItem('attempt_identity_'+String(theoryAttemptId), JSON.stringify({
+          attemptId:Number(theoryAttemptId), bank:String(bank||'it').toLowerCase(),
+          subject:String(selection||'Assessment').trim(),
+          technology:String(bank||'it').toLowerCase()==='aviation' ? 'AVITECH Aviation' : 'AVITECH '+String(selection||'Assessment').trim(),
+          testType:'Theory'
+        }));
+      } catch(e) {}
+      if(window.startProctoring) window.startProctoring(theoryAttemptId);
+    } else {
+      console.error('Theory attempt start failed:', d);
+    }
+  }catch(e){ console.error('Theory attempt start failed:', e); }
+}
+
+const $ = id => document.getElementById(id);
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function normalizeKey(value){
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g," ")
+    .toLowerCase()
+    .replace(/[?!.:,;]+$/g,"");
+}
+
+function setStatus(text){
+  const el=$("robotStatus");
+  if(el){
+    el.textContent=text || "";
+    el.style.display=text ? "block" : "none";
+  }
+  const rs=$("recordStatus");
+  if(rs && !mediaRecorder) rs.textContent=text || "🎙️ Microphone ready. Click Start Recording.";
+}
+
+function setButtonsLocked(locked){
+  ["answer","startRecord","submitBtn","changeBtn","skipBtn","extraBtn"].forEach(id=>{
+    const el=$(id);
+    if(el) el.disabled=locked || testEnded;
+  });
+  const play=$("playRecord");
+  if(play) play.disabled=locked || !audioBlob || testEnded;
+}
+
+function updateLifelines(){
+  const skip=$("skipBtn");
+  const extra=$("extraBtn");
+  const change=$("changeBtn");
+  if(skip){
+    skip.textContent=`|◀ Skip (${Math.max(0,3-skipUsed)} left)`;
+    skip.disabled=answered || !speechFinished || testEnded || skipUsed>=3;
+  }
+  if(extra){
+    extra.textContent=`⏱️ Extra Time +30 sec (${Math.max(0,3-extraUsed)})`;
+    extra.disabled=answered || !speechFinished || testEnded || extraUsed>=3;
+  }
+  if(change){
+    change.disabled=answered || !speechFinished || testEnded || changeUsed;
+    change.classList.toggle("lifeline-used",changeUsed);
+  }
+}
+
+function updateTimer(){
+  const el=$("timer");
+  if(!el) return;
+  const sec=Math.max(0,timeLeft);
+  el.textContent=`${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`;
+  const box=el.closest(".timer");
+  if(box) box.classList.toggle("timer-danger",sec<=10);
+}
+
+function stopTimer(){
+  if(timerId){ clearInterval(timerId); timerId=null; }
+}
+
+function startTimer(){
+  stopTimer();
+  updateTimer();
+  timerId=setInterval(()=>{
+    if(testEnded || answered || !speechFinished) return;
+    timeLeft--;
+    updateTimer();
+    if(timeLeft<=0){
+      stopTimer();
+      handleTimeout();
+    }
+  },1000);
+}
+
+function getAnswer(q){
+  return q.correctAnswer ?? q.answer ?? q.correct_answer ?? "";
+}
+
+function getExplanation(q){
+  return q.explanation ??
+    q.Explanation ??
+    "This explanation describes the concept tested by the question and why the correct answer is appropriate.";
+}
+
+function showExplanation(q, userAnswer, correct){
+  const answer = getAnswer(q);
+  const explanation = getExplanation(q);
+
+  const review=$("answerReview");
+  if(review){
+    review.innerHTML = `
+      <div class="theory-answer-highlight">
+        <strong>Correct Answer:</strong> ${escapeHtml(answer || "Answer not available")}
+      </div>
+      ${userAnswer ? `
+      <div style="margin-top:6px;color:#526a92;font-size:14px;">
+        <strong>Your Answer:</strong> ${escapeHtml(userAnswer)}
+      </div>` : ""}
+    `;
+  }
+
+  const title=$("feedbackTitle");
+  if(title) title.textContent=correct ? "Correct Answer" : "Review Answer";
+
+  const text=$("feedbackText");
+  if(text){
+    text.innerHTML=`
+      <div class="theory-detail-block">
+        <div class="theory-detail-heading">📘 Answer in Detail</div>
+        <p>${escapeHtml(explanation)}</p>
+      </div>
+    `;
+  }
+
+  const feedback=$("feedback");
+  if(feedback){
+    feedback.style.display="flex";
+    feedback.classList.toggle("correct",correct);
+    feedback.classList.toggle("wrong",!correct);
+  }
+}
+
+function resetExplanation(){
+  const review=$("answerReview");
+  const text=$("feedbackText");
+  if(review) review.innerHTML="";
+  if(text) text.textContent="Your theory answer will be recorded here.";
+  const title=$("feedbackTitle");
+  if(title) title.textContent="Explanation of question";
+}
+
+function speak(text){
+  return new Promise(resolve=>{
+    if(!("speechSynthesis" in window)){
+      resolve(); return;
+    }
+    speechSynthesis.cancel();
+    const utter=new SpeechSynthesisUtterance(text);
+    utter.rate=0.95;
+    utter.pitch=1;
+    utter.onend=()=>resolve();
+    utter.onerror=()=>resolve();
+    speechSynthesis.speak(utter);
+  });
+}
+
+async function readCurrentQuestion(){
+  const q=questions[currentIndex];
+  if(!q) return;
+
+  speechFinished=false;
+  setButtonsLocked(true);
+  updateLifelines();
+  setStatus("🤖 Preparing question...");
+
+  const token=++speechToken;
+  await new Promise(r=>setTimeout(r,500));
+  if(token!==speechToken || testEnded) return;
+
+  const answerText=String(q.question || "");
+  setStatus("🤖 Robot is reading the question...");
+  await speak(answerText);
+
+  if(token!==speechToken || testEnded) return;
+
+  speechFinished=true;
+  setStatus("");
+  setButtonsLocked(false);
+  updateLifelines();
+  startTimer();
+}
+
+function renderQuestion(){
+  const q=questions[currentIndex];
+  if(!q) return;
+
+  answered=false;
+  speechFinished=false;
+  audioBlob=null;
+  audioChunks=[];
+  if(mediaRecorder && mediaRecorder.state!=="inactive"){
+    try{mediaRecorder.stop();}catch(e){}
+  }
+
+  const questionEl=$("question");
+  if(questionEl){
+    questionEl.innerHTML=
+      `Question ${currentIndex+1}:<br><span class="question-text">${escapeHtml(q.question)}</span>`;
+  }
+
+  const counter=$("counter");
+  if(counter) counter.textContent=`${currentIndex+1} / ${questions.length}`;
+
+  const answer=$("answer");
+  if(answer){
+    answer.value="";
+    answer.disabled=true;
+  }
+
+  const play=$("playRecord");
+  if(play) play.disabled=true;
+
+  resetExplanation();
+  updateLifelines();
+  timeLeft=120;
+  updateTimer();
+  readCurrentQuestion();
+}
+
+function handleSubmit(){
+  if(testEnded || !speechFinished || answered) return;
+
+  const input=$("answer");
+  const value=(input?.value || "").trim();
+
+  if(!value){
+    if(input) input.focus();
+    setStatus("Please type your theory answer before submitting.");
+    setTimeout(()=>setStatus(""),1800);
+    return;
+  }
+
+  answered=true;
+  stopTimer();
+
+  const q=questions[currentIndex];
+  const correctAnswer=String(getAnswer(q)).trim();
+  const correct=normalizeKey(value)===normalizeKey(correctAnswer);
+
+  showExplanation(q,value,correct);
+
+  const submit=$("submitBtn");
+  if(submit) submit.disabled=true;
+
+  const nextLabel=currentIndex===questions.length-1
+    ? "Finish Test  →" : "Next Question  →";
+
+  if(submit) submit.textContent=nextLabel;
+  setButtonsLocked(false);
+  if($("answer")) $("answer").disabled=true;
+
+  updateLifelines();
+
+  const records=JSON.parse(localStorage.getItem("theoryRecords") || "[]");
+  records[currentIndex]={question:q.question,userAnswer:value,correctAnswer,correct};
+  localStorage.setItem("theoryRecords",JSON.stringify(records));
+}
+
+function nextQuestion(){
+  if(testEnded) return;
+
+  if(!answered){
+    handleSubmit();
+    return;
+  }
+
+  if(currentIndex<questions.length-1){
+    currentIndex++;
+    renderQuestion();
+  }else{
+    finishTest("completed");
+  }
+}
+
+function handleSkip(){
+  if(testEnded || !speechFinished || answered) return;
+
+  if(skipUsed>=3){
+    finishTest("4th skip used — test over");
+    return;
+  }
+
+  skipUsed++;
+  stopTimer();
+  const q=questions[currentIndex];
+  const records=JSON.parse(localStorage.getItem("theoryRecords") || "[]");
+  records[currentIndex]={question:q.question,userAnswer:"",correctAnswer:getAnswer(q),correct:false,skipped:true};
+  localStorage.setItem("theoryRecords",JSON.stringify(records));
+
+  if(currentIndex<questions.length-1){
+    currentIndex++;
+    renderQuestion();
+  }else{
+    finishTest("completed");
+  }
+}
+
+function handleExtra(){
+  if(testEnded || !speechFinished || answered || extraUsed>=3) return;
+  extraUsed++;
+  timeLeft+=30;
+  updateTimer();
+  updateLifelines();
+}
+
+function handleChange(){
+  if(testEnded || !speechFinished || answered || changeUsed) return;
+  if(questionPool.length<16) return;
+
+  const currentKey=normalizeKey(questions[currentIndex]?.question);
+  const available=shuffle(questionPool.filter(q=>normalizeKey(q.question)!==currentKey));
+
+  if(!available.length) return;
+
+  const replacement=available[0];
+  questions[currentIndex]=replacement;
+  changeUsed=true;
+  renderQuestion();
+}
+
+function handleTimeout(){
+  if(testEnded || answered) return;
+
+  skipUsed++;
+  if(skipUsed>=4){
+    finishTest("4th skip used automatically on timeout");
+    return;
+  }
+
+  if(currentIndex<questions.length-1){
+    currentIndex++;
+    renderQuestion();
+  }else{
+    finishTest("completed");
+  }
+}
+
+async function finishTest(reason){
+  if(testEnded) return;
+  testEnded=true;
+  stopTimer();
+  speechToken++;
+  if("speechSynthesis" in window) speechSynthesis.cancel();
+  if(window.stopProctoring) window.stopProctoring();
+
+  const records=JSON.parse(localStorage.getItem("theoryRecords") || "[]");
+  const reportQuestions=questions.map((q,i)=>{
+    const rec=records[i];
+    if(rec){
+      return {id:q.id||'',question:q.question,chosenAnswer:rec.userAnswer||'',rightAnswer:rec.correctAnswer||getAnswer(q),isCorrect:!!rec.correct,skipped:!!rec.skipped,difficulty:q.difficulty||'Medium',topic:q.topic||q.language||selection,subtopic:q.subtopic||q.topic||selection};
+    }
+    return {id:q.id||'',question:q.question,chosenAnswer:'',rightAnswer:getAnswer(q),isCorrect:false,skipped:true,difficulty:q.difficulty||'Medium',topic:q.topic||q.language||selection,subtopic:q.subtopic||q.topic||selection};
+  });
+  const correct=reportQuestions.filter(x=>x.isCorrect&&!x.skipped).length;
+  const skipped=reportQuestions.filter(x=>x.skipped).length;
+  const result={bank,subject:selection,language:selection,testType:"Theory",technology:(bank==='aviation'?'AVITECH Aviation':'AVITECH '+selection),score:correct,correct,total:reportQuestions.length,skipped,wrong:reportQuestions.length-correct-skipped,endedBy:reason||'completed',test_type:'theory',questions:reportQuestions,attemptId:theoryAttemptId,proctoringAttemptId:theoryAttemptId,proctoring:window.getProctoringSummary?window.getProctoringSummary():null,proctoringEvents:window.getProctoringEvents?window.getProctoringEvents():[]};
+  localStorage.setItem("quizResult",JSON.stringify(result));
+  try{
+    if(theoryAttemptId) await fetch('/api/attempt/finish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attempt_id:theoryAttemptId,bank,subject:selection,endedBy:reason||'completed',test_type:'theory',questions:reportQuestions,lifelines:[] ,proctoring:window.getProctoringSummary?window.getProctoringSummary():null}),keepalive:true});
+  }catch(e){console.error('Could not save theory attempt:',e);}
+  window.location.href=theoryAttemptId ? `/result?attempt=${encodeURIComponent(theoryAttemptId)}` : '/result?attempt_missing=1';
+}
+
+function initRecording(){
+  const start=$("startRecord");
+  const play=$("playRecord");
+  if(!start) return;
+
+  if(!navigator.mediaDevices?.getUserMedia){
+    start.disabled=true;
+    return;
+  }
+
+  start.onclick=async()=>{
+    if(!speechFinished || answered || testEnded) return;
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      audioChunks=[];
+      mediaRecorder=new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable=e=>{
+        if(e.data.size) audioChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop=()=>{
+        stream.getTracks().forEach(t=>t.stop());
+        audioBlob=new Blob(audioChunks,{type:"audio/webm"});
+        if(play){
+          play.disabled=false;
+          play.onclick=()=>{
+            const url=URL.createObjectURL(audioBlob);
+            const audio=$("audioPlayer");
+            if(audio){
+              audio.src=url;
+              audio.style.display="block";
+              audio.play();
+            }
+          };
+        }
+        start.textContent="🔴 Start Recording";
+        setStatus("🎙️ Recording saved. You can play it or submit your answer.");
+      };
+
+      mediaRecorder.start();
+      start.textContent="⏹️ Stop Recording";
+      start.onclick=()=>{
+        if(mediaRecorder && mediaRecorder.state!=="inactive") mediaRecorder.stop();
+      };
+      setStatus("🎙️ Recording...");
+    }catch(err){
+      console.error(err);
+      setStatus("🎙️ Microphone permission was not granted.");
+    }
+  };
+}
+
+function bindControls(){
+  const submit=$("submitBtn");
+  const skip=$("skipBtn");
+  const extra=$("extraBtn");
+  const change=$("changeBtn");
+
+  if(submit) submit.onclick=handleSubmit;
+  if(skip) skip.onclick=handleSkip;
+  if(extra) extra.onclick=handleExtra;
+  if(change) change.onclick=handleChange;
+
+  // Voice/recording buttons are optional; text answer remains the main submission.
+  initRecording();
+
+  const answer=$("answer");
+  if(answer){
+    answer.addEventListener("input",()=>{
+      if(!answered && speechFinished){
+        const submit=$("submitBtn");
+        if(submit) submit.disabled=!answer.value.trim();
+      }
+    });
+  }
+}
+
+async function loadTheoryBank(){
+  const fileName=bank==="aviation"
+    ? "aviation_theory.json"
+    : "It_theory_questions.json";
+
+  const url=`/static/data/${encodeURIComponent(fileName)}?v=theory-final-1`;
+
+  let response;
+  try{
+    response=await fetch(url,{cache:"no-store"});
+  }catch(err){
+    throw new Error(`Network error while loading ${fileName}`);
+  }
+
+  if(!response.ok){
+    throw new Error(`Unable to load ${fileName} (${response.status})`);
+  }
+
+  THEORY=await response.json();
+
+  let all=[];
+
+  if(bank==="aviation"){
+    Object.entries(THEORY || {}).forEach(([topic,items])=>{
+      if(!Array.isArray(items)) return;
+      items.forEach(q=>{
+        all.push({...q,topic:q.topic || topic});
+      });
+    });
+
+    questionPool=all.filter(q=>
+      String(q.topic || "").trim().toLowerCase()===normalizedSelection
+    );
+  }else{
+    all=Array.isArray(THEORY.questions) ? THEORY.questions : [];
+
+    questionPool=all.filter(q=>
+      String(q.language || "").trim().toLowerCase()===normalizedSelection
+    );
+  }
+
+  // Remove repeated question text from the selected pool.
+  const seen=new Set();
+  questionPool=questionPool.filter(q=>{
+    const key=normalizeKey(q.question);
+    if(!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  if(!questionPool.length){
+    throw new Error(
+      `No theory questions found for "${selection}" in ${fileName}`
+    );
+  }
+
+  const advanced=shuffle(questionPool.filter(q=>String(q.difficulty).toLowerCase()==="advanced"));
+  const hard=shuffle(questionPool.filter(q=>String(q.difficulty).toLowerCase()==="hard"));
+  const medium=shuffle(questionPool.filter(q=>String(q.difficulty).toLowerCase()==="medium"));
+
+  if(advanced.length<1 || hard.length<7 || medium.length<7){
+    throw new Error(
+      `Not enough questions for ${selection}: Advanced=${advanced.length}, Hard=${hard.length}, Medium=${medium.length}`
+    );
+  }
+
+  questions=shuffle([
+    advanced[0],
+    ...hard.slice(0,7),
+    ...medium.slice(0,7)
+  ]);
+
+  if(questions.length!==15){
+    throw new Error("Could not create the required 15-question theory test.");
+  }
+
+  currentIndex=0;
+  skipUsed=0;
+  extraUsed=0;
+  changeUsed=false;
+  testEnded=false;
+  localStorage.removeItem("theoryRecords");
+
+  bindControls();
+  renderQuestion();
+}
+
+function showLoadError(error){
+  console.error("Theory load error:",error);
+  const q=$("question");
+  if(q) q.textContent="Unable to load theory questions.";
+
+  const feedback=$("feedback");
+  if(feedback){
+    feedback.style.display="flex";
+    const text=$("feedbackText");
+    if(text) text.textContent=error.message || "Please check the theory question bank.";
+  }
+}
+
+(async()=>{
+  try{
+    if(window.requestProctoringPermissions){
+      const permissionsOk=await window.requestProctoringPermissions();
+      if(!permissionsOk) throw new Error('Camera and microphone permission is required to begin the test.');
+    }
+    await startTheoryAttempt();
+    await loadTheoryBank();
+  }catch(error){
+    showLoadError(error);
+  }
+})();
+</script>
+
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="{{ url_for('static', filename='react-navbar.js') }}"></script>
+
+<script src="{{ url_for('static', filename='ai-page-greeting.js', v='10') }}"></script>
+
+<style id="theory-timer-final-fix">
+/* Final theory timer alert: ONLY the timer changes in the last 10 seconds. */
+.question-side .timer.timer-danger {
+  border-color:#ef3340 !important;
+  background:#fff1f3 !important;
+  box-shadow:0 0 0 5px rgba(239,51,64,.10), 0 5px 18px rgba(239,51,64,.22) !important;
+  animation: theoryTimerAlert 0.85s ease-in-out infinite !important;
+}
+.question-side .timer.timer-danger strong { color:#ef3340 !important; }
+@keyframes theoryTimerAlert {
+  0%,100% { transform:scale(1); opacity:1; }
+  50% { transform:scale(1.09); opacity:.72; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .question-side .timer.timer-danger { animation:none !important; }
+}
+</style>
+<script src="{{ url_for('static', filename='anti-copy.js') }}"></script>
+<script src="{{ url_for('static', filename='csrf.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='responsive.css', v='2') }}">
+</body>
+</html>

@@ -1,0 +1,8 @@
+
+.ai-page-greeting{position:fixed;right:24px;bottom:24px;z-index:1000;display:flex;align-items:center;gap:10px;max-width:330px;padding:10px 14px 10px 10px;border:1px solid rgba(112,92,255,.20);border-radius:18px;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);box-shadow:0 12px 35px rgba(48,72,120,.14);color:#173268;font:600 13px/1.35 Inter,Segoe UI,Arial,sans-serif}.ai-page-greeting .ai-bubble{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2b8ff5,#7250ee);color:#fff;font-size:21px;box-shadow:0 6px 18px rgba(78,86,230,.28);cursor:pointer}.ai-page-greeting .ai-copy strong{display:block;font-size:10px;letter-spacing:1.5px;color:#6654ee;margin-bottom:2px}.ai-page-greeting .ai-close{margin-left:4px;border:0;background:transparent;color:#8090aa;font-size:15px;cursor:pointer;padding:2px}.ai-page-greeting.ai-dark{background:rgba(8,9,20,.86);color:#e9ecff;border-color:rgba(146,110,255,.25)}
+@media(max-width:650px){.ai-page-greeting{right:12px;bottom:12px;max-width:calc(100vw - 24px);font-size:12px}.ai-page-greeting .ai-bubble{width:38px;height:38px}}
+
+
+/* Written AI greeting auto-disappears after 10 seconds. */
+.ai-page-greeting{transition:opacity .25s ease,transform .25s ease}
+.ai-page-greeting.ai-greeting-hide{opacity:0;transform:translateY(10px);pointer-events:none}

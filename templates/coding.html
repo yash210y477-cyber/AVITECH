@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+<meta charset="UTF-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AVITECH | AI Coding Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='react-navbar.css', v='8') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='ai-page-greeting.css', v='10') }}">
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:linear-gradient(135deg,#eef6ff,#f8fbff);
+    color:#17233f;
+    min-height:100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+    height:70px;
+    background:#ffffff;
+    border-bottom:1px solid #d7e6fb;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 32px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo-icon{
+    width:38px;
+    height:38px;
+
+    border-radius:11px;
+
+    background:#1769e0;
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:19px;
+}
+
+.round-title{
+    font-size:14px;
+    color:#6b7a93;
+    font-weight:600;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+    width:min(1250px,94%);
+    height:calc(100vh - 70px);
+
+    margin:auto;
+    padding:18px 0;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+}
+
+
+/* =========================================================
+   QUESTION CARD
+========================================================= */
+
+.question-card{
+    flex-shrink:0;
+
+    background:#ffffff;
+
+    border:1px solid #d7e5f6;
+
+    border-radius:17px;
+
+    padding:16px 20px;
+
+    margin-bottom:12px;
+
+    box-shadow:0 8px 28px rgba(42,103,180,.10);
+}
+
+.question-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin-bottom:8px;
+}
+
+.question-number{
+    font-size:11px;
+
+    font-weight:800;
+
+    letter-spacing:1px;
+
+    color:#56708f;
+}
+
+.question-text{
+    font-size:18px;
+
+    line-height:1.4;
+
+    font-weight:700;
+
+    color:#17233f;
+}
+
+
+/* =========================================================
+   REPEAT QUESTION
+========================================================= */
+
+.repeat-btn{
+    border:1px solid #cfe0f4;
+
+    background:#f4f9ff;
+
+    color:#245b9e;
+
+    padding:7px 12px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    transition:.2s;
+}
+
+.repeat-btn:hover{
+    background:#e8f3ff;
+
+    border-color:#bcd6f4;
+
+    transform:translateY(-1px);
+}
+
+.repeat-btn:disabled{
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+
+/* =========================================================
+   WORKSPACE
+========================================================= */
+
+.workspace{
+    flex:1;
+
+    min-height:0;
+
+    display:grid;
+
+    grid-template-columns:minmax(0,1fr) 270px;
+
+    gap:14px;
+}
+
+
+/* =========================================================
+   EDITOR PANEL
+========================================================= */
+
+.editor-panel{
+    min-height:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    background:#16181d;
+
+    border:1px solid #282b33;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 14px 40px rgba(0,0,0,.12);
+}
+
+
+/* =========================================================
+   WRITE YOUR CODE TITLE
+========================================================= */
+
+.write-code-title{
+    flex-shrink:0;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    letter-spacing:1.4px;
+
+    color:#1769e0;
+
+    background:#ffffff;
+
+    padding:10px 14px;
+
+    border-bottom:1px solid #dcecff;
+}
+
+
+/* =========================================================
+   EDITOR HEADER
+========================================================= */
+
+ .selected-language{
+    font-family:Inter,system-ui,sans-serif;
+    font-size:14px;
+    font-weight:700;
+    color:#cbd5e1;
+    letter-spacing:.2px;
+}
+.editor-header{
+    height:47px;
+
+    flex-shrink:0;
+
+    background:#202329;
+
+    border-bottom:1px solid #30333b;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 15px;
+}
+
+.editor-left{
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+}
+
+.dot{
+    width:10px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:#777;
+}
+
+.editor-name{
+    color:#d8d9de;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+.editor-status{
+    color:#aeb1bb;
+
+    font-size:11px;
+}
+
+
+/* =========================================================
+   LANGUAGE SELECT
+========================================================= */
+
+.editor-tools{
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+}
+
+.language-select{
+    background:#2a2d34;
+
+    color:#eee;
+
+    border:1px solid #3b3e47;
+
+    border-radius:8px;
+
+    padding:7px 9px;
+
+    font-size:11px;
+
+    outline:none;
+
+    cursor:pointer;
+}
+
+.language-select:disabled{
+    opacity:.4;
+
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   CODE AREA
+========================================================= */
+
+.code-area{
+    flex:1;
+
+    min-height:0;
+
+    display:flex;
+
+    overflow:hidden;
+}
+
+.line-numbers{
+    width:48px;
+
+    flex-shrink:0;
+
+    background:#14161a;
+
+    color:#5e626d;
+
+    text-align:right;
+
+    padding:16px 10px 16px 0;
+
+    font-family:Consolas,Monaco,monospace;
+
+    font-size:13px;
+
+    line-height:1.65;
+
+    overflow:hidden;
+
+    user-select:none;
+}
+
+#codeEditor{
+    flex:1;
+
+    width:100%;
+    height:100%;
+
+    resize:none;
+
+    border:none;
+
+    outline:none;
+
+    background:#16181d;
+
+    color:#f0f1f4;
+
+    padding:16px;
+
+    font-family:Consolas,Monaco,"Courier New",monospace;
+
+    font-size:13px;
+
+    line-height:1.65;
+
+    tab-size:4;
+
+    white-space:pre;
+
+    overflow:auto;
+}
+
+#codeEditor:disabled{
+    opacity:.5;
+
+    cursor:not-allowed;
+}
+
+#codeEditor::selection{
+    background:#3d414b;
+}
+
+
+/* =========================================================
+   EDITOR FOOTER
+========================================================= */
+
+.editor-footer{
+    flex-shrink:0;
+
+    min-height:54px;
+
+    background:#202329;
+
+    border-top:1px solid #30333b;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:8px 12px;
+}
+
+.footer-info{
+    color:#8e929d;
+
+    font-size:10px;
+}
+
+.editor-actions{
+    display:flex;
+
+    gap:8px;
+}
+
+.btn{
+    border:none;
+
+    border-radius:9px;
+
+    padding:9px 14px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-1px);
+}
+
+.btn:disabled{
+    opacity:.4;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+.clear-btn{
+    background:#dcecff;
+
+    color:#245b9e;
+}
+
+.submit-btn{
+    background:#1769e0;
+
+    color:#ffffff;
+}
+
+.next-btn{
+    display:none;
+
+    background:#1769e0;
+
+    color:#ffffff;
+}
+
+.next-btn.show{
+    display:inline-flex;
+}
+
+
+/* =========================================================
+   LIFELINES
+========================================================= */
+
+.lifelines{
+    min-height:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:14px;
+
+    background:#ffffff;
+
+    border:1px solid #d5e4f7;
+
+    border-radius:18px;
+
+    box-shadow:0 12px 35px rgba(42,103,180,.10);
+
+    overflow:hidden;
+}
+
+.life-header{
+    flex-shrink:0;
+
+    margin-bottom:12px;
+}
+
+.life-title{
+    font-size:15px;
+
+    font-weight:800;
+
+    color:#23446f;
+}
+
+.life-subtitle{
+    margin-top:3px;
+
+    font-size:10px;
+
+    color:#71829b;
+}
+
+.life-list{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:9px;
+}
+
+.life-btn{
+    width:100%;
+
+    min-height:61px;
+
+    border:1px solid #d8e5f5;
+
+    background:#f7fbff;
+
+    border-radius:13px;
+
+    padding:10px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    transition:.2s;
+}
+
+.life-btn:hover{
+    background:#eef6ff;
+
+    border-color:#bcd6f4;
+
+    transform:translateY(-1px);
+}
+
+.life-btn:disabled{
+    opacity:.4;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+.life-icon{
+    width:34px;
+    height:34px;
+
+    border-radius:10px;
+
+    background:#e8f2ff;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:16px;
+
+    flex-shrink:0;
+}
+
+.life-info{
+    min-width:0;
+}
+
+.life-name{
+    font-size:11px;
+
+    font-weight:800;
+
+    color:#23446f;
+}
+
+.life-count{
+    margin-top:3px;
+
+    font-size:10px;
+
+    color:#71829b;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message{
+    display:none;
+
+    margin-top:10px;
+
+    border-radius:11px;
+
+    padding:11px 13px;
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+.message.show{
+    display:block;
+}
+
+.correct{
+    background:#eaf8f0;
+
+    color:#18713d;
+
+    border:1px solid #bde8cb;
+}
+
+.wrong{
+    background:#fff0f0;
+
+    color:#b62b2b;
+
+    border:1px solid #f0c3c3;
+}
+
+.info{
+    background:#eef5fc;
+
+    color:#50657f;
+
+    border:1px solid #d8e5f5;
+}
+
+
+/* =========================================================
+   RESULT SCREEN
+========================================================= */
+
+.result-screen{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        #eef6ff,
+        #f8fbff
+    );
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:20;
+}
+
+.result-card{
+    width:min(450px,90%);
+
+    background:#ffffff;
+
+    border:1px solid #d7e5f6;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 20px 60px rgba(42,103,180,.15);
+}
+
+.result-icon{
+    font-size:48px;
+
+    margin-bottom:10px;
+}
+
+.result-card h1{
+    font-size:25px;
+
+    margin-bottom:8px;
+}
+
+.result-card p{
+    color:#7c8da5;
+
+    font-size:13px;
+}
+
+.score{
+    font-size:48px;
+
+    font-weight:900;
+
+    margin:15px 0;
+
+    color:#1769e0;
+}
+
+.restart-btn{
+    background:#1769e0;
+
+    color:white;
+
+    padding:11px 20px;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:950px){
+
+    .main{
+        height:auto;
+
+        min-height:calc(100vh - 70px);
+
+        overflow:visible;
+    }
+
+    .workspace{
+        grid-template-columns:1fr;
+    }
+
+    .editor-panel{
+        min-height:500px;
+    }
+
+    .lifelines{
+        min-height:auto;
+    }
+
+    .life-list{
+        display:grid;
+
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+
+@media(max-width:650px){
+
+    .header{
+        padding:0 15px;
+    }
+
+    .round-title{
+        display:none;
+    }
+
+    .main{
+        width:94%;
+    }
+
+    .question-text{
+        font-size:15px;
+    }
+
+    .life-list{
+        grid-template-columns:1fr;
+    }
+
+    .editor-footer{
+        flex-wrap:wrap;
+    }
+
+    .footer-info{
+        width:100%;
+    }
+
+    .editor-actions{
+        width:100%;
+    }
+
+    .editor-actions .btn{
+        flex:1;
+    }
+}
+
+
+/* =========================================================
+   AVITECH CODING — SAME MCQ/THEORY VISUAL SYSTEM
+   Console/editor itself intentionally remains dark.
+========================================================= */
+body{
+  font-family:Inter,sans-serif!important;
+  color:#102b66!important;
+  background:radial-gradient(circle at 2% 18%,#bcecff66,transparent 22%),radial-gradient(circle at 100% 25%,#cbb7ff66,transparent 24%),radial-gradient(circle at 85% 80%,#efc8ff55,transparent 22%),#f7fbff!important;
+}
+.main{width:89%;max-width:1365px;height:auto;min-height:calc(100vh - 110px);padding:18px 0 28px;overflow:visible!important}
+.hero,.question-card,.workspace,.lifelines{background:#ffffff82!important;backdrop-filter:blur(16px);border:1px solid #d2e1f3!important;box-shadow:0 12px 35px #374b6e14!important;border-radius:22px!important}
+.hero{min-height:170px!important;padding:24px 38px!important;display:flex;align-items:center;gap:40px;margin-bottom:12px}
+.heroBot{width:150px!important;text-align:center;font-size:85px!important}
+.hero h1{font-size:32px!important;line-height:1.15;background:linear-gradient(90deg,#153d94,#3151ee,#a33ce9);-webkit-background-clip:text;color:transparent;font-weight:900}
+.hero p{margin-top:12px!important;color:#5f82ca!important;font-size:16px!important}
+.question-card.quiz{padding:22px 25px!important;margin:0 0 12px!important;background:#ffffff82!important;overflow:visible!important}
+.question-row{display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:24px!important;margin-bottom:10px!important}
+.question-heading{min-width:0;flex:1}
+.question-number{font-size:11px!important;letter-spacing:1px;color:#56708f!important;margin-bottom:8px}
+.question-text{font-size:22px!important;line-height:1.4;font-weight:750;color:#17233f!important}
+.question-side{display:flex!important;flex-direction:column!important;align-items:center!important;gap:14px!important;flex:none!important}
+#codingCounter{margin:0;color:#102b66}
+.timer{width:78px!important;height:78px!important;border-radius:50%!important;background:linear-gradient(145deg,#f7fbff,#edf4ff)!important;border:3px solid #b8cdf0!important;box-shadow:0 5px 16px rgba(64,96,160,.16),0 0 0 5px rgba(108,92,231,.07)!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;margin:0!important}
+.timer:before{display:none!important}.timer strong{font-size:20px!important;color:#244b91!important;font-weight:800!important;margin:0!important}
+.timer.timer-danger{border-color:#ef3340!important;background:#fff1f3!important;box-shadow:0 5px 18px rgba(239,51,64,.20),0 0 0 5px rgba(239,51,64,.08)!important;animation:codingTimerDanger 1s ease-in-out infinite!important}
+.timer.timer-danger strong{color:#ef3340!important}
+@keyframes codingTimerDanger{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.07);opacity:.72}}
+.repeat-btn{margin-top:4px!important;background:#ffffffb8!important;border:1px solid #7463ee!important;color:#5145e9!important;border-radius:14px!important;padding:10px 18px!important}
+.workspace{display:grid!important;grid-template-columns:minmax(0,1fr) 270px!important;gap:14px!important;padding:0!important;border-radius:22px!important;background:transparent!important;box-shadow:none!important;border:0!important;backdrop-filter:none!important}
+.editor-panel{border-radius:19px!important;box-shadow:0 12px 35px #374b6e14!important}
+.lifelines{padding:14px!important}
+.life-title{font-size:15px!important;color:#23446f!important}.life-subtitle{color:#71829b!important}
+.life-btn{background:#f7fbff!important;border:1px solid #d8e5f5!important;border-radius:13px!important}
+.life-btn:hover{background:#eef6ff!important;border-color:#bcd6f4!important}
+.life-btn:disabled{opacity:.48!important;cursor:not-allowed!important}
+.editor-footer{border-radius:0 0 18px 18px!important}
+.editor-actions .next-btn{display:none!important}
+.coding-main-action{min-width:270px!important;border:0!important;color:#fff!important;background:linear-gradient(100deg,#2498f5,#a74be9)!important;box-shadow:0 8px 22px rgba(83,83,238,.18)!important}
+.coding-main-action:hover:not(:disabled){transform:translateY(-2px)!important;filter:brightness(1.06)}
+.message{border-radius:14px!important}
+@media(max-width:900px){.workspace{grid-template-columns:1fr!important}.hero{flex-wrap:wrap}.heroBot{width:100px!important}.question-row{gap:12px!important}.life-list{display:grid!important;grid-template-columns:repeat(3,1fr)!important}}
+@media(max-width:650px){.main{width:95%}.hero{flex-direction:column;text-align:center;padding:20px!important}.heroBot{height:80px!important}.hero h1{font-size:25px!important}.hero p{font-size:14px!important}.question-text{font-size:17px!important}.question-side .timer{width:64px!important;height:64px!important}.question-side .timer strong{font-size:16px!important}.life-list{grid-template-columns:1fr!important}.coding-main-action{width:100%!important;min-width:0!important}}
+
+/* =========================================================
+   CODING CONTROLS — EXACT MCQ / THEORY POSITION
+========================================================= */
+.coding-controls{
+  margin:0 0 14px!important;
+  border:1px solid #d6e3f3!important;
+  border-radius:17px!important;
+  padding:17px 25px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:18px!important;
+  background:#ffffff42!important;
+}
+.coding-life-btn{
+  height:60px!important;
+  border-radius:17px!important;
+  padding:0 25px!important;
+  border:1px solid #7a63ff!important;
+  background:#ffffff70!important;
+  color:#5345e9!important;
+  font-size:17px!important;
+  font-weight:700!important;
+  cursor:pointer!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  transition:.2s!important;
+}
+.coding-life-btn:hover:not(:disabled){background:#f0efff!important;transform:translateY(-1px)!important}
+.coding-life-btn:disabled{opacity:.55!important;cursor:not-allowed!important;transform:none!important}
+.coding-main-action{
+  margin-left:auto!important;
+  min-width:270px!important;
+  height:60px!important;
+  border-radius:17px!important;
+  border:0!important;
+  color:#fff!important;
+  background:linear-gradient(100deg,#2498f5,#a74be9)!important;
+  box-shadow:0 8px 22px rgba(83,83,238,.18)!important;
+  font-size:17px!important;
+  font-weight:700!important;
+  cursor:pointer!important;
+}
+.coding-main-action:hover:not(:disabled){transform:translateY(-2px)!important;filter:brightness(1.06)}
+.coding-main-action:disabled{opacity:.55!important;cursor:not-allowed!important}
+.workspace{grid-template-columns:1fr!important}
+.editor-panel{width:100%!important}
+@media(max-width:900px){
+  .coding-controls{flex-wrap:wrap!important;gap:12px!important}
+  .coding-life-btn{flex:1 1 auto!important}
+  .coding-main-action{margin-left:0!important;flex:1 1 100%!important}
+}
+@media(max-width:600px){
+  .coding-controls{padding:12px!important;gap:10px!important}
+  .coding-life-btn{width:100%!important;flex:1 1 100%!important}
+  .coding-main-action{width:100%!important;min-width:0!important}
+}
+
+
+/* CODING REFERENCE LAYOUT: same structure/spacing as MCQ & Theory */
+.hero{margin-bottom:14px!important}
+.coding-quiz-shell{width:100%!important;background:rgba(255,255,255,.88)!important;border:1px solid rgba(118,151,220,.30)!important;border-radius:22px!important;box-shadow:0 16px 42px rgba(47,79,145,.16),0 0 0 1px rgba(112,132,204,.08),0 3px 10px rgba(47,79,145,.07)!important;padding:24px 25px 28px!important;overflow:visible!important}
+.coding-question-row{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:24px!important;margin:0 0 24px!important}
+.coding-question-row .question-heading{flex:1;min-width:0}
+.coding-question-row .question-number{margin-bottom:9px!important}
+.coding-question-row .question-text{font-size:27px!important;line-height:1.4!important;font-weight:800!important;color:#172f68!important}
+.coding-question-row .question-side{display:flex!important;flex-direction:column!important;align-items:center!important;gap:14px!important;min-width:92px!important;padding-top:0!important}
+.coding-question-row #codingCounter{order:1!important;background:#f0efff!important;color:#655be0!important;border:1px solid #e2defc!important;border-radius:14px!important;padding:8px 18px!important;font-size:15px!important;white-space:nowrap!important}
+.coding-question-row .timer{order:2!important;width:84px!important;height:84px!important;border-radius:50%!important;background:linear-gradient(145deg,#fff,#eef4ff)!important;border:3px solid #b9c9ef!important;box-shadow:0 8px 22px rgba(67,91,160,.18),0 0 0 5px rgba(105,118,230,.07)!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important}
+.coding-question-row .timer strong{font-size:19px!important;color:#234b9b!important;font-weight:900!important}
+.coding-question-row .timer.timer-danger{border-color:#ef4b57!important;background:#fff1f3!important;color:#d92f3e!important;animation:codingTimerDanger 1s ease-in-out infinite!important}
+.coding-question-row .timer.timer-danger strong{color:#d92f3e!important}
+.coding-console-wrap{width:100%!important;margin:0 0 20px!important}
+.coding-console-wrap .editor-panel{width:100%!important;height:360px!important;min-height:360px!important;border-radius:18px!important}
+.coding-controls{width:100%!important;margin:0 0 18px!important;padding:0!important;border:0!important;background:transparent!important;display:flex!important;align-items:center!important;gap:18px!important}
+.coding-life-btn{height:64px!important;border-radius:17px!important;padding:0 25px!important;border:1px solid #d4e0f3!important;background:#fff!important;color:#183d7b!important;font-size:16px!important;font-weight:800!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;line-height:1!important;white-space:nowrap!important;box-shadow:none!important;cursor:pointer!important}
+.coding-life-btn:hover:not(:disabled){background:#f7f9ff!important;border-color:#bfcff0!important;transform:translateY(-1px)!important}
+.coding-life-btn:disabled{opacity:.5!important;cursor:not-allowed!important;transform:none!important}
+.coding-main-action{margin-left:0!important;min-width:300px!important;height:64px!important;border-radius:17px!important;border:0!important;color:#fff!important;background:linear-gradient(100deg,#7d39f0,#cf20d4)!important;box-shadow:0 10px 25px rgba(124,59,237,.22)!important;font-size:17px!important;font-weight:800!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important}
+.coding-main-action:hover:not(:disabled){transform:translateY(-2px)!important;filter:brightness(1.04)}
+.coding-main-action:disabled{opacity:.55!important;cursor:not-allowed!important}
+.coding-explanation{min-height:132px!important;border:1px solid #d9e5f5!important;border-radius:18px!important;background:rgba(248,251,255,.72)!important;display:flex!important;align-items:flex-start!important;gap:22px!important;padding:22px 28px!important}
+.coding-explanation-icon{width:58px;height:58px;flex:0 0 58px;border-radius:50%;background:#eef0ff;display:flex;align-items:center;justify-content:center;font-size:25px}
+.coding-explanation-content{border-left:2px solid #7658f5;padding-left:26px;min-width:0}
+.coding-explanation-content h3{font-size:18px!important;color:#17356f!important;font-weight:800!important;margin:0 0 14px!important}
+.coding-explanation-label{font-size:17px!important;color:#7347ee!important;font-weight:800!important;margin-bottom:7px!important}
+.coding-explanation-content p{font-size:14px!important;line-height:1.6!important;color:#607493!important;margin:0!important}
+
+.correct-code-box{
+    margin-top:18px;
+    padding:20px 24px;
+    background:#ffffff;
+    border:1px solid #d9e5f5;
+    border-radius:18px;
+    box-shadow:0 12px 35px rgba(42,103,180,.10);
+}
+.correct-code-header{
+    color:#17356f;
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:12px;
+}
+.correct-code-box pre{
+    margin:0;
+    padding:16px;
+    border-radius:12px;
+    background:#151922;
+    color:#dce9ff;
+    font-family:Consolas,"Courier New",monospace;
+    font-size:14px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    overflow:auto;
+}
+
+.repeat-btn{display:none!important}
+@media(max-width:900px){.coding-controls{flex-wrap:wrap!important}.coding-main-action{flex:1 1 100%!important;width:100%!important}.coding-life-btn{flex:1 1 auto!important}}
+@media(max-width:600px){.coding-quiz-shell{padding:18px 14px 22px!important}.coding-question-row{gap:12px!important}.coding-question-row .question-text{font-size:18px!important}.coding-question-row .timer{width:70px!important;height:70px!important}.coding-question-row .timer strong{font-size:16px!important}.coding-question-row #codingCounter{font-size:12px!important;padding:7px 12px!important}.coding-console-wrap .editor-panel{height:330px!important;min-height:330px!important}.coding-life-btn{width:100%!important;flex:1 1 100%!important}.coding-main-action{min-width:0!important}.coding-explanation{padding:18px!important;gap:13px!important}.coding-explanation-content{padding-left:15px!important}}
+
+
+/* FINAL CODING INTERFACE ALIGNMENT */
+.coding-question-row{align-items:flex-start!important;gap:24px!important;margin-bottom:24px!important}
+.coding-question-row .question-number{font-size:28px!important;line-height:1.25!important;letter-spacing:0!important;font-weight:800!important;color:#17356f!important;margin-bottom:10px!important}
+.coding-question-row .question-text{font-size:28px!important;line-height:1.4!important;font-weight:800!important;color:#17356f!important}
+.coding-question-row .question-side{flex-direction:row!important;align-items:center!important;justify-content:flex-end!important;gap:16px!important;min-width:190px!important;padding-top:0!important}
+.coding-question-row #codingCounter{order:1!important;background:#f0efff!important;color:#5c5bef!important;border:1px solid #e2defc!important;border-radius:14px!important;padding:8px 18px!important;font-size:15px!important;font-weight:800!important;white-space:nowrap!important}
+.coding-question-row .timer{order:2!important;width:84px!important;height:84px!important;flex:0 0 84px!important;border-radius:50%!important;background:linear-gradient(145deg,#fff,#eef4ff)!important;border:3px solid #b9c9ef!important;box-shadow:0 8px 22px rgba(67,91,160,.18),0 0 0 5px rgba(105,118,230,.07)!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:4px!important;position:relative!important}
+.coding-question-row .timer:before{display:none!important}
+.coding-question-row .timer span{position:relative!important;font-size:18px!important;color:#5274b8!important;line-height:1!important}
+.coding-question-row .timer strong{position:relative!important;font-size:19px!important;color:#234b9b!important;font-weight:900!important;margin:0!important;line-height:1!important}
+.coding-question-row .timer.timer-danger{border-color:#ef4b57!important;background:#fff1f3!important;animation:codingTimerDanger 1s ease-in-out infinite!important}
+.coding-question-row .timer.timer-danger span,.coding-question-row .timer.timer-danger strong{color:#d92f3e!important}
+.coding-main-action{margin-left:auto!important;min-width:300px!important}
+.coding-question-row .question-side{min-width:auto!important;}
+.coding-question-row #codingCounter{margin-left:auto!important;}
+
+/* Remove the editor's top-right language selector area entirely. */
+.editor-tools{display:none!important}
+@media(max-width:900px){.coding-question-row .question-side{min-width:auto!important;gap:10px!important}.coding-main-action{margin-left:auto!important}}
+@media(max-width:600px){.coding-question-row{gap:12px!important}.coding-question-row .question-number{font-size:21px!important}.coding-question-row .question-text{font-size:18px!important}.coding-question-row .question-side{gap:8px!important}.coding-question-row .timer{width:70px!important;height:70px!important;flex-basis:70px!important}.coding-question-row .timer strong{font-size:16px!important}.coding-question-row .timer span{font-size:15px!important}.coding-question-row #codingCounter{font-size:12px!important;padding:7px 12px!important}.coding-main-action{margin-left:0!important}}
+
+</style>
+<style id="coding-evaluator-status">
+.answer-status{line-height:1.5;white-space:normal}
+.answer-status:not(.correct):not(.incorrect){color:#7a5a00;border-color:#e8d59b;background:#fff9e8}
+#correctCodeText{max-height:320px;overflow:auto}
+</style>
+<style id="coding-answer-status">
+.answer-status{margin:14px 0 0;padding:14px 18px;border:1px solid #d3e0ee;border-radius:14px;background:rgba(255,255,255,.72);font-size:18px;font-weight:800;text-align:center;}
+.answer-status.correct{color:#16803a;border-color:#9ed8b2;background:#effbf3;}
+.answer-status.incorrect{color:#c0392b;border-color:#efb0aa;background:#fff4f3;}
+.correct-code-box{margin:14px 0 0;padding:16px 18px;border:1px solid #d3e0ee;border-radius:14px;background:#f7faff;text-align:left;}
+.correct-code-title{font-size:17px;font-weight:800;color:#234a8a;margin-bottom:9px;}
+.correct-code-box pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:Consolas,monospace;font-size:14px;line-height:1.55;color:#1f2937;}
+</style>
+<style id="correct-code-readable">
+.correct-code-box pre{
+  color:#e5e7eb !important;
+  background:#111827 !important;
+  opacity:1 !important;
+  font-family:Consolas,"Courier New",monospace !important;
+  font-size:15px !important;
+  line-height:1.6 !important;
+  white-space:pre-wrap !important;
+  word-break:break-word !important;
+  padding:18px !important;
+  border-radius:12px !important;
+  overflow:auto !important;
+}
+</style>
+<style id="coding-lifeline-used">
+.life-btn.lifeline-used,
+.life-btn.lifeline-used:hover{
+    background:#fff0f0 !important;
+    border-color:#ef8f8f !important;
+    color:#c62828 !important;
+    box-shadow:none !important;
+    transform:none !important;
+}
+.life-btn.lifeline-used .life-label,
+.life-btn.lifeline-used .life-title,
+.life-btn.lifeline-used .life-subtitle{
+    color:#c62828 !important;
+}
+</style>
+<style id="coding-lifeline-red-final">
+.lifelines .life-btn.lifeline-used,
+.lifelines .life-btn.lifeline-used:hover,
+.lifelines .life-btn.lifeline-used:disabled{
+  background:#fff0f0 !important;
+  border-color:#ef8f8f !important;
+  color:#c62828 !important;
+  opacity:1 !important;
+  cursor:not-allowed !important;
+  box-shadow:none !important;
+  transform:none !important;
+}
+</style>
+<style>
+/* Shared eye-detection / proctoring UI */
+.proctor-panel{position:fixed;right:18px;bottom:18px;z-index:1000;width:230px;background:rgba(10,18,35,.94);color:#fff;border:1px solid rgba(120,170,255,.25);border-radius:16px;padding:10px;box-shadow:0 16px 40px rgba(0,0,0,.28);backdrop-filter:blur(12px)}
+.proctor-head{display:flex;justify-content:space-between;gap:8px;font-size:10px;font-weight:800;letter-spacing:.5px;margin-bottom:8px}.proctor-head span:last-child{font-weight:600;opacity:.75;text-transform:none}
+#proctorVideo{display:block;width:100%;height:135px;object-fit:cover;border-radius:11px;background:#050811;transform:scaleX(-1)}
+.proctor-warning{min-height:0;color:#ffb4b4;font-size:11px;line-height:1.35;margin-top:6px}.proctor-warning.show{padding:7px;border-radius:8px;background:rgba(255,70,90,.12)}
+.proctor-stats{display:flex;justify-content:space-between;margin-top:7px;font-size:10px;opacity:.82}#objectDetectionBadge{margin-top:7px;padding:6px 8px;border-radius:8px;font-size:10.5px;line-height:1.35;font-weight:700;background:rgba(255,70,90,.16);color:#ffb4b4;border:1px solid rgba(255,120,140,.35)}#objectDetectionBadge[hidden]{display:none}
+.test-over-modal{position:fixed;inset:0;z-index:3000;display:grid;place-items:center;background:rgba(11,18,34,.72);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.test-over-modal[hidden]{display:none}
+.test-over-card{width:min(472px,90vw);padding:36px 38px 34px;border-radius:23px;text-align:center;background:rgba(255,255,255,.98);color:#183873;box-shadow:0 30px 100px rgba(0,0,0,.32);border:1px solid rgba(224,231,242,.95)}
+.test-over-icon{width:68px;height:68px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:#fff0f3;color:#ff3e5d;font-size:34px;font-weight:900;line-height:1}
+.test-over-card h2{margin:0 0 7px;color:#183873;font-size:29px;line-height:1.15;font-weight:900;letter-spacing:-.5px}
+.test-over-card p{margin:0 0 10px;color:#ff3858;font-size:17px;font-weight:850}.test-over-card small{display:block;color:#7385a1;font-size:14px;line-height:1.45}
+.proctor-terminated .quiz,.proctor-terminated .controls,.proctor-terminated .coding-quiz-shell{filter:blur(1px);pointer-events:none}
+@media(max-width:700px){.proctor-panel{right:10px;bottom:10px;width:180px}.proctor-panel #proctorVideo{height:105px}}
+</style>
+<style id="coding-hero-match-mcq">
+/* MCQ/THEORY HERO SPACE — exact height/spacing */
+.hero{
+  min-height:365px!important;
+  margin:0 0 14px!important;
+  padding:35px 70px 38px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:55px!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 4% 75%,rgba(117,210,255,.23),transparent 22%),
+    radial-gradient(circle at 97% 30%,rgba(194,165,255,.25),transparent 24%),
+    linear-gradient(115deg,rgba(238,250,255,.88),rgba(255,255,255,.74),rgba(247,242,255,.9))!important;
+}
+.heroBot{width:230px!important;font-size:130px!important;flex:none!important;text-align:center!important}
+.hero h1{font-size:48px!important;line-height:1.15!important;letter-spacing:-1.5px!important;font-weight:900!important}
+.hero p{margin-top:18px!important;font-size:19px!important}
+@media(max-width:900px){
+  .hero{min-height:260px!important;padding:30px!important;flex-wrap:wrap!important}
+  .heroBot{width:120px!important;font-size:90px!important}
+  .hero h1{font-size:32px!important}
+}
+@media(max-width:600px){
+  .hero{min-height:260px!important;flex-direction:column!important;text-align:center!important;padding:30px 20px!important}
+  .heroBot{height:100px!important;width:120px!important;font-size:90px!important}
+  .hero h1{font-size:26px!important}
+  .hero p{font-size:14px!important}
+}
+</style>
+</head>
+
+
+<body>
+<div id="proctorPanel" class="proctor-panel">
+  <div class="proctor-head"><span>● PROCTORING</span><span id="proctorStatus">Starting camera…</span></div>
+  <video id="proctorVideo" autoplay muted playsinline></video>
+  <div id="proctorWarning" class="proctor-warning" aria-live="assertive"></div>
+  <div id="objectDetectionBadge" role="status" hidden></div>
+  <div class="proctor-stats"><span>Faces: <b id="faceCount">0</b></span><span>Look-away: <b id="lookCount">0</b></span></div>
+</div>
+<div id="testOverModal" class="test-over-modal" hidden>
+  <div class="test-over-card">
+    <div class="test-over-icon">!</div>
+    <h2>Test Terminated</h2>
+    <p>Suspicious activities detected</p>
+    <small id="terminationReason"></small>
+  </div>
+</div>
+
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<div id="react-navbar"></div>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+    
+
+
+    <section class="coding-quiz-shell" style="display:none;">
+        <div class="question-row coding-question-row">
+            <div class="question-heading">
+                <div class="question-number" id="questionNumber">QUESTION 01</div>
+                <div class="question-text" id="questionText"></div>
+            </div>
+            <div class="question-side">
+                <strong id="codingCounter">1 / 15</strong>
+            </div>
+        </div>
+
+        <div class="coding-console-wrap">
+<div class="editor-panel">
+
+
+            <div class="write-code-title">
+                WRITE YOUR CODE
+            </div>
+
+
+            <div class="editor-header">
+
+
+                <div class="editor-left">
+
+                    <div class="dot"></div>
+
+
+
+                
+                <div class="selected-language" id="selectedLanguage">Language</div>
+            </div>
+</div>
+
+
+
+            <div class="code-area">
+
+
+                <div
+                    class="line-numbers"
+                    id="lineNumbers"
+                >
+                    1
+                </div>
+
+
+                <textarea
+                    id="codeEditor"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    placeholder="# Write your solution here..."
+                ></textarea>
+
+
+            </div>
+
+
+
+            <div class="editor-footer">
+                
+                <div class="editor-actions">
+                    <button class="btn clear-btn" id="clearCode">Clear</button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        </div>
+
+        <div class="controls coding-controls">
+            <button class="coding-life-btn" id="skipQuestion">|◀ &nbsp; Skip (3 left)</button>
+            <button class="coding-life-btn" id="changeQuestion">🔄 &nbsp; Change the Question</button>
+            <button class="coding-life-btn" id="hintLifeline">💡 &nbsp; Hint</button>
+            <button class="next coding-main-action" id="submitCode">Submit Answer &nbsp; →</button>
+        </div>
+
+        </div>
+
+        <div class="message" id="message"></div>
+        <div class="answer-status" id="answerStatus" style="display:none;"></div>
+        <div class="correct-code-box" id="correctCodeBox" style="display:none;"><div class="correct-code-title">Correct Code</div><pre id="correctCodeText"></pre></div>
+    </section>
+
+</main>
+
+
+
+<!-- =========================================================
+     RESULT SCREEN
+========================================================= -->
+
+<div
+    class="result-screen"
+    id="resultScreen"
+>
+
+
+    <div class="result-card">
+
+
+        <div class="result-icon">
+            🎉
+        </div>
+
+
+        <h1>
+            Test Completed
+        </h1>
+
+
+        <p>
+            Your coding round has been completed.
+        </p>
+
+
+        <div
+            class="score"
+            id="finalScore"
+        >
+            0/15
+        </div>
+
+
+        <button
+            class="restart-btn"
+            onclick="restartTest()"
+        >
+            Restart Test
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+<script>window.tf = window.faceapi && window.faceapi.tf;</script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2/dist/coco-ssd.min.js"></script>
+<script src="{{ url_for('static', filename='proctoring.js', v='permission-fast-20261010') }}"></script>
+<script>
+const CODING_TOPICS = ["HTML","CSS","JavaScript","Bootstrap","Tailwind","React","Vanilla JS","Python","Java","C","C++","C#",".NET","PHP","Node.js"];
+const FILE_MAP = {"ALL":"it_coding_questions.json"};
+
+// The bank contains 200 questions per coding topic:
+// 75 Medium + 75 Hard + 50 Advanced.
+// A coding round presents 15 questions: 7 Medium + 7 Hard + 1 Advanced.
+let selectedTopic = null;
+let bank = [];
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+let skipUsed = 0;
+let changeUsed = false;
+let hintUsed = false;
+let speechToken = 0;
+let codingLifelineUsage = [];
+let answerSubmitted = false;
+let isSpeaking = false;
+let codingAttemptId = null;
+let codingStartedAt = null;
+let codingAnswers = [];
+let codingEnded = false;
+
+async function startCodingAttempt(){
+  if(window.requestProctoringPermissions){
+    const permissionsOk=await window.requestProctoringPermissions();
+    if(!permissionsOk) throw new Error('Camera and microphone permission is required to begin the test.');
+  }
+  codingStartedAt = new Date().toISOString();
+  try{
+    const r=await fetch('/api/attempt/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bank:'it',subject:selectedTopic||new URLSearchParams(location.search).get('language')||null,started_at:codingStartedAt})});
+    const d=await r.json();
+    if(r.ok && d.ok){
+      codingAttemptId=d.attempt_id;
+      localStorage.setItem('lastAttemptId',String(codingAttemptId));
+      // Bind the selected coding language to this exact attempt. The result page
+      // must never borrow a language from a previous test.
+      try {
+        localStorage.setItem('attempt_identity_'+String(codingAttemptId), JSON.stringify({
+          attemptId:Number(codingAttemptId),
+          bank:'it',
+          subject:String(selectedTopic || new URLSearchParams(location.search).get('language') || 'Coding').trim(),
+          technology:'AVITECH '+String(selectedTopic || new URLSearchParams(location.search).get('language') || 'Coding').trim(),
+          testType:'Coding'
+        }));
+      } catch(e) {}
+      if(window.startProctoring) window.startProctoring(codingAttemptId);
+    } else console.error('Coding attempt start failed:',d);
+  }catch(e){console.error('Coding attempt start failed:',e);}
+}
+
+const quizShell = document.querySelector(".coding-quiz-shell");
+const questionNumber = document.getElementById("questionNumber");
+const questionText = document.getElementById("questionText");
+const codingCounter = document.getElementById("codingCounter");
+const codeEditor = document.getElementById("codeEditor");
+const clearCode = document.getElementById("clearCode");
+const submitCode = document.getElementById("submitCode");
+const skipQuestion = document.getElementById("skipQuestion");
+const changeQuestion = document.getElementById("changeQuestion");
+const hintLifeline = document.getElementById("hintLifeline");
+const message = document.getElementById("message");
+const lineNumbers = document.getElementById("lineNumbers");
+const resultScreen = document.getElementById("resultScreen");
+const finalScore = document.getElementById("finalScore");
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function normalizeQuestionKey(value){
+  return String(value || "").trim().replace(/\s+/g," ").toLowerCase().replace(/[?!.:,;]+$/g,"");
+}
+
+function pickUniqueQuestions(pool, count, usedKeys){
+  const picked=[];
+  for(const q of shuffle(pool)){
+    const key=normalizeQuestionKey(q.question);
+    if(!key || usedKeys.has(key)) continue;
+    picked.push(q);
+    usedKeys.add(key);
+    if(picked.length===count) break;
+  }
+  return picked;
+}
+
+function buildRound(all){
+  // Fixed coding-test pattern: 8 Easy + 3 Medium + 3 Hard + 1 Advanced = 15.
+  // Question text is normalized before selection so the same question cannot
+  // appear twice in one test, even if it exists under different IDs.
+  const usedKeys=new Set();
+  const easy=pickUniqueQuestions(all.filter(q=>q.difficulty==="Easy"),8,usedKeys);
+  const medium=pickUniqueQuestions(all.filter(q=>q.difficulty==="Medium"),3,usedKeys);
+  const hard=pickUniqueQuestions(all.filter(q=>q.difficulty==="Hard"),3,usedKeys);
+  const advanced=pickUniqueQuestions(all.filter(q=>q.difficulty==="Advanced"),1,usedKeys);
+
+  const round=[...easy,...medium,...hard,...advanced];
+  if(round.length!==15){
+    throw new Error("Unable to build a unique 15-question coding test with the required difficulty pattern.");
+  }
+  return shuffle(round);
+}
+
+async function loadSelectedTopic(topic){
+  selectedTopic = topic;
+  const selectedLanguage = document.getElementById("selectedLanguage");
+  if(selectedLanguage) selectedLanguage.textContent = topic;
+
+  try{
+    const res = await fetch("/static/data/it_coding_questions.json");
+    if(!res.ok) throw new Error("Question bank could not be loaded");
+
+    const data = await res.json();
+    const allQuestions = data.questions || [];
+    const wantedTopic = String(topic).trim().toLowerCase()==='tailwind' ? 'Tailwind CSS' : topic;
+    bank = allQuestions.filter(q => String(q.language || '').trim().toLowerCase() === String(wantedTopic).trim().toLowerCase());
+
+    if(bank.length < 200) throw new Error("Incomplete question bank for " + topic);
+
+    questions = buildRound(bank);
+    await startCodingAttempt();
+    quizShell.style.display = "block";
+    resultScreen.style.display = "none";
+    resetRoundState();
+    loadQuestion(0);
+  }catch(err){
+    showMessage("⚠️ Could not load the "+topic+" coding question bank.","info");
+    console.error(err);
+  }
+}
+
+function resetRoundState(){
+  currentQuestion=0;
+  score=0;
+  skipUsed=0;
+  changeUsed=false;
+  hintUsed=false;
+  speechToken++;
+  isSpeaking=false;
+  if("speechSynthesis" in window) window.speechSynthesis.cancel();
+  codingLifelineUsage=[];
+  answerSubmitted=false;
+  codingAnswers=Array(questions.length).fill(null);
+  codingEnded=false;
+  resultScreen.style.display="none";
+}
+
+function speakQuestion(q){
+  if(!("speechSynthesis" in window)){
+    isSpeaking=false;
+    enableCoding();
+    updateLifeLines();
+    return;
+  }
+
+  // Invalidate callbacks from any previous utterance before starting the new one.
+  const token = ++speechToken;
+  window.speechSynthesis.cancel();
+  isSpeaking=true;
+  // Lock every lifeline/control before speech starts.
+  disableCoding();
+
+  const u=new SpeechSynthesisUtterance(q);
+  u.lang="en-IN"; u.rate=.90; u.pitch=1.02; u.volume=1;
+  const unlock=()=>{
+    if(token !== speechToken) return;
+    isSpeaking=false;
+    enableCoding();
+    updateLifeLines();
+  };
+  u.onend=unlock;
+  u.onerror=unlock;
+  window.speechSynthesis.speak(u);
+}
+
+function loadQuestion(index){
+  if(!questions.length) return;
+  currentQuestion=index;
+  answerSubmitted=false;
+  const q=questions[currentQuestion];
+  questionNumber.textContent="Question "+(currentQuestion+1)+":";
+  questionText.textContent=q.question;
+  codingCounter.textContent=(currentQuestion+1)+" / "+questions.length;
+  codeEditor.value="";
+  updateLineNumbers();
+  hideMessage();
+  const answerStatus = document.getElementById("answerStatus");
+  if(answerStatus){ answerStatus.style.display="none"; answerStatus.className="answer-status"; answerStatus.textContent=""; }
+  const correctCodeBox=document.getElementById("correctCodeBox");
+  const correctCodeText=document.getElementById("correctCodeText");
+  if(correctCodeBox){ correctCodeBox.style.display="none"; }
+  if(correctCodeText){ correctCodeText.textContent=""; }
+  submitCode.textContent="Submit Answer  →";
+  enableCoding();
+  updateLifeLines();
+  speakQuestion(q.question);
+}
+
+function disableCoding(){
+  // While AI is speaking, no assessment control or lifeline can be used.
+  codeEditor.disabled=true;
+  clearCode.disabled=true;
+  submitCode.disabled=true;
+  skipQuestion.disabled=true;
+  changeQuestion.disabled=true;
+  hintLifeline.disabled=true;
+  if (typeof updateLifeLines === "function") updateLifeLines();
+}
+function enableCoding(){
+  if(answerSubmitted) return;
+  codeEditor.disabled=false;
+  clearCode.disabled=false;
+  submitCode.disabled=false;
+  updateLifeLines();
+}
+
+
+
+function autoSkip(){
+  if(skipUsed<3){
+    skipUsed++;
+    nextQuestionOrFinish();
+  }else{
+    finishTest();
+  }
+}
+
+function nextQuestionOrFinish(){
+  if(currentQuestion>=questions.length-1) finishTest();
+  else loadQuestion(currentQuestion+1);
+}
+
+function setLifelineUsed(button, used){
+  button.classList.toggle("lifeline-used", used);
+  if(used){
+    button.style.setProperty("background", "#fff0f0", "important");
+    button.style.setProperty("border-color", "#ef8f8f", "important");
+    button.style.setProperty("color", "#c62828", "important");
+    button.style.setProperty("box-shadow", "none", "important");
+  }else{
+    button.style.removeProperty("background");
+    button.style.removeProperty("border-color");
+    button.style.removeProperty("color");
+    button.style.removeProperty("box-shadow");
+  }
+}
+
+function updateLifeLines(){
+  const after = answerSubmitted;
+
+  skipQuestion.disabled = isSpeaking || after || skipUsed>=3;
+  changeQuestion.disabled = isSpeaking || after || changeUsed;
+  hintLifeline.disabled = isSpeaking || after || hintUsed;
+  skipQuestion.setAttribute("aria-disabled", skipQuestion.disabled ? "true" : "false");
+  changeQuestion.setAttribute("aria-disabled", changeQuestion.disabled ? "true" : "false");
+  hintLifeline.setAttribute("aria-disabled", hintLifeline.disabled ? "true" : "false");
+
+  // Used lifelines are visibly RED and stay red while disabled.
+  setLifelineUsed(changeQuestion, changeUsed);
+  setLifelineUsed(hintLifeline, hintUsed);
+  setLifelineUsed(skipQuestion, skipUsed>=3);
+
+  skipQuestion.textContent="|◀  Skip ("+(3-skipUsed)+" left)";
+  changeQuestion.textContent="🔄  Change the Question";
+  hintLifeline.textContent="💡  Hint";
+}
+
+skipQuestion.addEventListener("click",()=>{
+  if(skipQuestion.disabled) return;
+  skipUsed++;
+  const q=questions[currentQuestion];
+  codingAnswers[currentQuestion]={id:q.id||'',question:q.question,chosenAnswer:'',rightAnswer:'Skipped',isCorrect:false,skipped:true,difficulty:q.difficulty||'Medium',topic:q.language||selectedTopic,subtopic:q.language||selectedTopic};
+  nextQuestionOrFinish();
+});
+
+changeQuestion.addEventListener("click",()=>{
+  if(changeQuestion.disabled) return;
+  changeUsed=true;
+  const currentKey = normalizeQuestionKey(questions[currentQuestion].question);
+  const usedKeys = new Set(questions.map((q,i)=>i===currentQuestion ? null : normalizeQuestionKey(q.question)).filter(Boolean));
+  const sameLevel = bank.filter(q =>
+    q.difficulty===questions[currentQuestion].difficulty &&
+    normalizeQuestionKey(q.question)!==currentKey &&
+    !usedKeys.has(normalizeQuestionKey(q.question))
+  );
+  const unusedAnyLevel = bank.filter(q =>
+    normalizeQuestionKey(q.question)!==currentKey &&
+    !usedKeys.has(normalizeQuestionKey(q.question))
+  );
+  const replacement=shuffle(sameLevel.length ? sameLevel : unusedAnyLevel)[0];
+  if(replacement){
+    questions[currentQuestion]=replacement;
+    loadQuestion(currentQuestion);
+  }
+});
+
+function getLevel1Hint(q){
+  // Hints are stored with every coding question. The lifeline reveals only
+  // the Level-1 function/method/API direction for the current question.
+  const hint = String(q?.hint || '').trim();
+  return hint ? `💡 Hint: ${hint}` : '';
+}
+
+hintLifeline.addEventListener("click",()=>{
+  // Never allow a lifeline while the robot is speaking. The button is also
+  // disabled visually, but keep this guard here so keyboard/programmatic
+  // activation cannot bypass the rule.
+  if(isSpeaking || answerSubmitted || hintUsed) {
+    updateLifeLines();
+    return;
+  }
+
+  const q=questions[currentQuestion];
+  const hintText=getLevel1Hint(q);
+  if(!hintText){
+    showMessage("⚠️ A hint is not available for this question.","info");
+    return;
+  }
+
+  hintUsed=true;
+  codingLifelineUsage.push({
+    question_no:currentQuestion+1,
+    question_id:q?.id||'',
+    lifeline:'hint',
+    usedAt:new Date().toISOString()
+  });
+  showMessage(hintText,"info");
+  updateLifeLines();
+});
+
+submitCode.addEventListener("click", async ()=>{
+  if(isSpeaking) return;
+  if(answerSubmitted){ nextQuestionOrFinish(); return; }
+
+  const code=codeEditor.value.trim();
+  if(!code){showMessage("⚠️ Please write your code first.","info");return;}
+
+  const q=questions[currentQuestion];
+  submitCode.disabled=true;
+  submitCode.textContent="Analyzing Code…";
+  showMessage("🔎 Analyzing syntax and code logic…","info");
+
+  let evaluation={status:"WRONG_ANSWER",score:0,summary:"0% Code Correct • Evaluation unavailable."};
+  try{
+    const response=await fetch("/api/coding/evaluate",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({question_id:q.id,language:q.language||selectedTopic,code})
+    });
+    const data=await response.json();
+    if(!response.ok || !data.ok) throw new Error(data.error||"evaluation_failed");
+    evaluation=data.evaluation||evaluation;
+  }catch(err){
+    console.error("Coding evaluation failed:",err);
+    evaluation={status:"WRONG_ANSWER",score:0,summary:"0% Code Correct • Automatic analysis could not be completed."};
+  }
+
+  answerSubmitted=true;
+  const correct=String(evaluation.status||"")==="PASS";
+  if(correct) score++;
+  codingAnswers[currentQuestion]={
+    id:q.id||'',question:q.question,chosenAnswer:code,rightAnswer:evaluation.summary||"Server-side evaluation",
+    isCorrect:correct,skipped:false,difficulty:q.difficulty||'Medium',topic:q.language||selectedTopic,
+    subtopic:q.language||selectedTopic,evaluation
+  };
+
+  const answerStatus=document.getElementById("answerStatus");
+  const correctCodeBox=document.getElementById("correctCodeBox");
+  const correctCodeText=document.getElementById("correctCodeText");
+  const passed=evaluation.status==="PASS";
+  const scorePct=Number(evaluation.score)||0;
+  if(answerStatus){
+    answerStatus.style.display="block";
+    answerStatus.className="answer-status " + (passed ? "correct" : "incorrect");
+    answerStatus.textContent=`Code Result • ${scorePct}% Code Correct`;
+  }
+  if(correctCodeBox && correctCodeText){
+    // Do not display generated/bundled `correctCode` as a trusted answer.
+    // The candidate-facing result must reflect the evaluator analysis only.
+    correctCodeBox.style.display="none";
+    correctCodeText.textContent="";
+  }
+
+  message.textContent="";
+  message.className="message";
+  codeEditor.disabled=true;
+  clearCode.disabled=true;
+  submitCode.disabled=false;
+  submitCode.textContent=currentQuestion===questions.length-1 ? "Finish Test  →" : "Next Question  →";
+  updateLifeLines();
+});
+
+clearCode.addEventListener("click",()=>{
+  if(isSpeaking) return;
+  codeEditor.value="";
+  updateLineNumbers();
+  hideMessage();
+});
+
+codeEditor.addEventListener("paste",e=>e.preventDefault());
+
+/* VS Code-like lightweight editor behaviour */
+const EDITOR_INDENT = "    ";
+const OPEN_TO_CLOSE = {"(":")","[":"]","{":"}"};
+const CLOSE_TO_OPEN = {")":"(","]":"[","}":"{"
+};
+const QUOTE_PAIRS = {"'":"'", '"':'"', "`":"`"};
+
+function getLineStart(value, pos){
+  const i=value.lastIndexOf("\n", Math.max(0,pos-1));
+  return i===-1 ? 0 : i+1;
+}
+function getCurrentLine(value, pos){
+  const start=getLineStart(value,pos);
+  const end=value.indexOf("\n",pos);
+  return value.slice(start,end===-1?value.length:end);
+}
+function leadingWhitespace(line){
+  const m=line.match(/^[ \t]*/);
+  return m ? m[0] : "";
+}
+function isEscaped(value,pos){
+  let count=0;
+  for(let i=pos-1;i>=0 && value[i]==="\\";i--) count++;
+  return count%2===1;
+}
+function isInsideSameQuote(line,pos,quote){
+  let open=false;
+  for(let i=0;i<pos;i++){
+    if(line[i]===quote && !isEscaped(line,i)) open=!open;
+  }
+  return open;
+}
+function shouldAutoCloseQuote(value,pos,quote){
+  if(isEscaped(value,pos)) return false;
+  const lineStart=getLineStart(value,pos);
+  const line=value.slice(lineStart,pos);
+  const next=value[pos]||"";
+  if(next===quote) return false;
+  if(quote==="'" && /[A-Za-z0-9_$]/.test(value[pos-1]||"") && /[A-Za-z0-9_$]/.test(next)) return false;
+  return !isInsideSameQuote(line,line.length,quote);
+}
+function lineNeedsExtraIndent(line, language){
+  const trimmed=line.trim();
+  if(!trimmed) return false;
+  if(/[({[]\s*(?:(?:\/\/|#).*)?$/.test(trimmed)) return true;
+  if(String(language||"").toLowerCase()==="python" && /:\s*(?:#.*)?$/.test(trimmed)) return true;
+  return false;
+}
+function lineNeedsDedent(textAfter){
+  return /^[\)\]\}]/.test(textAfter.trimStart());
+}
+function indentSelectedLines(text, start, end, direction){
+  const blockStart=getLineStart(text,start);
+  let blockEnd=text.indexOf("\n",end);
+  if(blockEnd===-1) blockEnd=text.length;
+  const block=text.slice(blockStart,blockEnd);
+  const lines=block.split("\n");
+  const changed=lines.map(line=>{
+    if(direction<0){
+      if(line.startsWith(EDITOR_INDENT)) return line.slice(EDITOR_INDENT.length);
+      if(line.startsWith("\t")) return line.slice(1);
+      if(/^ {1,3}/.test(line)) return line.replace(/^ {1,4}/,"");
+      return line;
+    }
+    return line ? EDITOR_INDENT+line : line;
+  }).join("\n");
+  return {text:text.slice(0,blockStart)+changed+text.slice(blockEnd),start:blockStart,end:blockStart+changed.length};
+}
+
+codeEditor.addEventListener("keydown",function(e){
+  if(isSpeaking) return;
+  const value=this.value;
+  const start=this.selectionStart;
+  const end=this.selectionEnd;
+
+  if(e.key==="Tab"){
+    e.preventDefault();
+    if(start!==end){
+      const result=indentSelectedLines(value,start,end,e.shiftKey?-1:1);
+      this.value=result.text;
+      this.selectionStart=result.start;
+      this.selectionEnd=result.end;
+    }else if(e.shiftKey){
+      const lineStart=getLineStart(value,start);
+      const before=value.slice(lineStart,start);
+      let remove=0;
+      if(before.endsWith(EDITOR_INDENT)) remove=4;
+      else if(before.endsWith("\t")) remove=1;
+      else { const m=before.match(/ {1,4}$/); remove=m?m[0].length:0; }
+      if(remove){
+        this.value=value.slice(0,start-remove)+value.slice(start);
+        this.selectionStart=this.selectionEnd=start-remove;
+      }
+    }else{
+      this.value=value.slice(0,start)+EDITOR_INDENT+value.slice(end);
+      this.selectionStart=this.selectionEnd=start+EDITOR_INDENT.length;
+    }
+    updateLineNumbers();
+    return;
+  }
+
+  if(e.key==="Enter"){
+    e.preventDefault();
+    const before=value.slice(0,start);
+    const after=value.slice(end);
+    const currentLine=getCurrentLine(value,start);
+    let indent=leadingWhitespace(currentLine);
+    const trimmed=currentLine.trim();
+    const language=selectedTopic||"";
+
+    if(lineNeedsExtraIndent(currentLine,language)) indent+=EDITOR_INDENT;
+
+    const nextChar=after[0]||"";
+    if(CLOSE_TO_OPEN[nextChar] && /[({[]$/.test(trimmed)){
+      const base=leadingWhitespace(currentLine);
+      const inner=base+EDITOR_INDENT;
+      this.value=before+"\n"+inner+"\n"+base+after;
+      const cursor=start+1+inner.length;
+      this.selectionStart=this.selectionEnd=cursor;
+    }else{
+      if(lineNeedsDedent(after) && indent.length>=EDITOR_INDENT.length){
+        indent=indent.slice(0,-EDITOR_INDENT.length);
+      }
+      this.value=before+"\n"+indent+after;
+      this.selectionStart=this.selectionEnd=start+1+indent.length;
+    }
+    updateLineNumbers();
+    return;
+  }
+
+  if(e.key==="Backspace" && start===end){
+    if(start>=1){
+      const left=value[start-1];
+      const right=value[start];
+      if((OPEN_TO_CLOSE[left]===right || QUOTE_PAIRS[left]===right)){
+        e.preventDefault();
+        this.value=value.slice(0,start-1)+value.slice(start+1);
+        this.selectionStart=this.selectionEnd=start-1;
+        updateLineNumbers();
+        return;
+      }
+    }
+    const lineStart=getLineStart(value,start);
+    const beforeLine=value.slice(lineStart,start);
+    if(beforeLine && /^[ \t]+$/.test(beforeLine)){
+      const remove=beforeLine.endsWith(EDITOR_INDENT)?4:beforeLine.endsWith("\t")?1:Math.min(4,beforeLine.length);
+      if(remove){
+        e.preventDefault();
+        this.value=value.slice(0,start-remove)+value.slice(start);
+        this.selectionStart=this.selectionEnd=start-remove;
+        updateLineNumbers();
+        return;
+      }
+    }
+  }
+
+  const pair=OPEN_TO_CLOSE[e.key]||QUOTE_PAIRS[e.key];
+  if(pair && start===end){
+    if(OPEN_TO_CLOSE[e.key] || shouldAutoCloseQuote(value,start,e.key)){
+      e.preventDefault();
+      this.value=value.slice(0,start)+e.key+pair+value.slice(end);
+      this.selectionStart=this.selectionEnd=start+1;
+      updateLineNumbers();
+      return;
+    }
+  }
+
+  if((CLOSE_TO_OPEN[e.key] || QUOTE_PAIRS[e.key]) && start===end && value[start]===e.key){
+    e.preventDefault();
+    this.selectionStart=this.selectionEnd=start+1;
+    return;
+  }
+
+  if(e.key==="/" && (e.ctrlKey||e.metaKey)){
+    e.preventDefault();
+    const lineStart=getLineStart(value,start);
+    const endLine=value.indexOf("\n",end);
+    const blockEnd=endLine===-1?value.length:endLine;
+    const block=value.slice(lineStart,blockEnd);
+    const lines=block.split("\n");
+    const lang=String(selectedTopic||"").toLowerCase();
+    const marker=lang==="python"?"#":"//";
+    const nonEmpty=lines.filter(x=>x.trim());
+    const uncomment=nonEmpty.length>0 && nonEmpty.every(x=>x.trimStart().startsWith(marker));
+    const changed=lines.map(line=>{
+      if(!line.trim()) return line;
+      const ws=line.match(/^\s*/)[0];
+      if(uncomment) return line.slice(0,ws.length)+line.slice(ws.length).replace(new RegExp("^"+marker+" ?"),"");
+      return ws+marker+" "+line.slice(ws.length);
+    }).join("\n");
+    this.value=value.slice(0,lineStart)+changed+value.slice(blockEnd);
+    this.selectionStart=lineStart;
+    this.selectionEnd=lineStart+changed.length;
+    updateLineNumbers();
+  }
+});
+
+codeEditor.addEventListener("scroll",()=>{
+  lineNumbers.scrollTop=codeEditor.scrollTop;
+});
+
+function updateLineNumbers(){
+  const count=codeEditor.value.split("\n").length;
+  lineNumbers.innerHTML=Array.from({length:count},(_,i)=>i+1).join("<br>");
+}
+
+function showMessage(text,type){
+  message.textContent=text;
+  message.className="message show "+type;
+}
+function hideMessage(){
+  message.textContent="";
+  message.className="message";
+}
+async function finishTest(reason){
+  if(codingEnded) return;
+  codingEnded=true;
+  if("speechSynthesis" in window) window.speechSynthesis.cancel();
+    isSpeaking=false;
+  if(window.stopProctoring) window.stopProctoring();
+
+  const reportQuestions=questions.map((q,i)=>codingAnswers[i]||{id:q.id||'',question:q.question,chosenAnswer:'',rightAnswer:'Skipped',isCorrect:false,skipped:true,difficulty:q.difficulty||'Medium',topic:q.language||selectedTopic,subtopic:q.language||selectedTopic});
+  const correct=reportQuestions.filter(x=>x.isCorrect&&!x.skipped).length;
+  const skipped=reportQuestions.filter(x=>x.skipped).length;
+  const result={technology:'AVITECH '+(selectedTopic||'Coding'),bank:'it',subject:selectedTopic,testType:'Coding',total:reportQuestions.length,score:correct,correct,wrong:reportQuestions.length-correct-skipped,skipped,endedBy:reason||'completed',test_type:'coding',questions:reportQuestions,attemptId:codingAttemptId,proctoringAttemptId:codingAttemptId,proctoring:window.getProctoringSummary?window.getProctoringSummary():null,proctoringEvents:window.getProctoringEvents?window.getProctoringEvents():[]};
+  localStorage.setItem('quizResult',JSON.stringify(result));
+  try{
+    if(codingAttemptId) await fetch('/api/attempt/finish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attempt_id:codingAttemptId,bank:'it',subject:selectedTopic,endedBy:reason||'completed',test_type:'coding',questions:reportQuestions,lifelines:codingLifelineUsage,proctoring:window.getProctoringSummary?window.getProctoringSummary():null}),keepalive:true});
+  }catch(e){console.error('Could not save coding attempt:',e);}
+  window.location.href=codingAttemptId ? `/result?attempt=${encodeURIComponent(codingAttemptId)}` : '/result?attempt_missing=1';
+}
+function restartTest(){
+  resultScreen.style.display="none";
+  resetRoundState();
+  questions=buildRound(bank);
+  loadQuestion(0);
+}
+
+// Coding language is selected on the shared IT language page (/it-topic?mode=coding).
+// The coding screen opens directly with that selected topic.
+const requestedTopic = new URLSearchParams(window.location.search).get("language");
+if(requestedTopic && CODING_TOPICS.includes(requestedTopic)){
+  loadSelectedTopic(requestedTopic);
+}
+</script>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="{{ url_for('static', filename='react-navbar.js') }}"></script>
+<script src="{{ url_for('static', filename='ai-page-greeting.js', v='10') }}"></script>
+
+
+<script src="{{ url_for('static', filename='anti-copy.js') }}"></script>
+<script src="{{ url_for('static', filename='csrf.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='responsive.css', v='2') }}">
+</body>
+</html>

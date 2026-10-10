@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+<meta charset="utf-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVITECH | My Progress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='react-navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='progress.css') }}">
+<style>
+.status-pill{display:inline-block;padding:6px 10px;border-radius:9px;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap}
+.status-completed{background:#e7f8ef;color:#0a9a61}
+.status-terminated{background:#ffe8ed;color:#df3d5c}
+.status-progress{background:#eef2f7;color:#64748b}
+</style>
+</head>
+<body>
+<div id="react-navbar"></div>
+
+<main class="progress-page">
+  <section class="progress-heading">
+    <div>
+      <span class="eyebrow"><i></i> AVITECH • PERFORMANCE TRACKER</span>
+      <h1>My Progress</h1>
+      <p>Complete performance history for <strong>{{ user.name }}</strong>.</p>
+    </div>
+    <div class="heading-actions">
+      <a class="page-action" href="/">⌂ Home</a>
+      {% if is_admin %}<a class="page-action" href="/admin">⚙ Admin</a>{% endif %}
+      <a class="page-action logout" href="/logout">Logout</a>
+    </div>
+  </section>
+
+  <section class="metrics-grid">
+    <article class="metric-card">
+      <span class="metric-label">TESTS GIVEN</span>
+      <strong>{{ totals.tests }}</strong>
+      <small>Completed tests</small>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">AVERAGE SCORE</span>
+      <strong>{{ totals.avg }}%</strong>
+      <small>Across all attempts</small>
+    </article>
+    <article class="metric-card">
+      <span class="metric-label">BEST SCORE</span>
+      <strong>{{ totals.best }}%</strong>
+      <small>Highest performance</small>
+    </article>
+    <article class="metric-card metric-green">
+      <span class="metric-label">CORRECT</span>
+      <strong>{{ totals.correct }}</strong>
+      <small>Correct answers</small>
+    </article>
+    <article class="metric-card metric-orange">
+      <span class="metric-label">SKIPPED</span>
+      <strong>{{ totals.skipped }}</strong>
+      <small>Skipped answers</small>
+    </article>
+  </section>
+
+  <section class="history-panel">
+    <div class="panel-head">
+      <div>
+        <span class="panel-kicker">PERFORMANCE</span>
+        <h2>Test History</h2>
+        <p>Your completed tests are recorded here automatically.</p>
+      </div>
+      <span class="history-count">{{ totals.tests }} Test{% if totals.tests != 1 %}s{% endif %}</span>
+    </div>
+
+    {% if attempts %}
+    <div class="table-wrap">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>#</th><th>TEST</th><th>SUBJECT</th><th>RESULT</th><th>SCORE</th>
+            <th>CORRECT</th><th>WRONG</th><th>SKIPPED</th><th>PERCENTAGE</th><th>COMPLETED</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for a in attempts %}
+          <tr>
+            <td data-label="#" class="index-cell">{{ loop.index }}</td>
+            <td data-label="Test"><span class="test-pill">{{ a.bank|upper }}</span></td>
+            <td data-label="Subject" class="subject-cell">{{ a.subject or 'General' }}</td>
+            <td data-label="Result">
+              {% if not a.completed_at %}
+                <span class="status-pill status-progress">In Progress</span>
+              {% elif a.ended_by == 'terminated' %}
+                <a class="status-pill status-terminated" href="/result?attempt={{ a.id }}">Terminated · View Report</a>
+              {% else %}
+                <a class="status-pill status-completed" href="/result?attempt={{ a.id }}">Completed · View Result</a>
+              {% endif %}
+            </td>
+            <td data-label="Score">
+              {% if a.ended_by == 'terminated' %}<strong>—</strong>{% else %}<strong>{{ a.score }}/{{ a.total_questions }}</strong>{% endif %}
+            </td>
+            <td data-label="Correct" class="correct-cell">{{ a.correct if a.ended_by != 'terminated' else '—' }}</td>
+            <td data-label="Wrong" class="wrong-cell">{{ a.wrong if a.ended_by != 'terminated' else '—' }}</td>
+            <td data-label="Skipped" class="skip-cell">{{ a.skipped if a.ended_by != 'terminated' else '—' }}</td>
+            <td data-label="Percentage"><span class="percentage">{% if a.ended_by == 'terminated' %}—{% else %}{{ a.percentage }}%{% endif %}</span></td>
+            <td data-label="Completed" class="date-cell">{{ a.completed_at[:19].replace('T',' ') if a.completed_at else 'In Progress' }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">📊</div>
+        <h3>No test attempts yet</h3>
+        <p>Complete a test and your history will appear here automatically.</p>
+        <a href="/learning" class="start-test">Start a Test →</a>
+      </div>
+    {% endif %}
+  </section>
+</main>
+<script src="{{ url_for('static', filename='anti-copy.js') }}"></script>
+<script src="{{ url_for('static', filename='csrf.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='responsive.css', v='2') }}">
+</body>
+</html>

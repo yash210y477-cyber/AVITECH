@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AVITECH | Learn & Explore</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='learning.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='react-navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='ai-page-greeting.css', v='10') }}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div id="react-navbar"></div>
+
+
+    <!-- MAIN SECTION -->
+    <main>
+
+        <div class="small-heading">
+            CHOOSE YOUR PATH
+        </div>
+
+        <h1>
+            TEST YOUR
+            <span>KNOWLEDGE</span>
+        </h1>
+
+        <p class="subtitle">
+            Explore technology and aviation. Learn, practice and challenge yourself.
+        </p>
+
+
+        <!-- SUBJECT CARDS -->
+        <section class="subjects">
+
+            <!-- IT CARD -->
+            <div class="subject-card">
+
+                <div class="image-container">
+              <object
+        type="image/svg+xml"
+        data="{{ url_for('static', filename='images/Coding Slide.svg') }}">
+    </object>
+                    <div class="image-label">
+                        IT
+                    </div>
+                </div>
+
+                <div class="card-content">
+
+                    <h2>Information Technology</h2>
+
+                    <p>
+                        Explore programming, databases, data analytics,
+                        artificial intelligence and more.
+                    </p>
+
+                    <button class="start-btn"
+                            onclick="selectSubject('IT')">
+                        Explore IT
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- AVIATION CARD -->
+            <div class="subject-card">
+
+                <div class="image-container">
+                    <object style="margin-top: -70px;"
+        type="image/svg+xml"
+        data="{{ url_for('static', filename='images/Isometric plane.svg') }}">
+    </object>
+
+                    <div class="image-label">
+                        AVIATION
+                    </div>
+                </div>
+
+                <div class="card-content">
+
+                    <h2>Aviation</h2>
+
+                    <p>
+                        Learn about aircraft, airports, cabin crew,
+                        aviation safety and the aviation industry.
+                    </p>
+
+                    <button class="start-btn"
+                            onclick="selectSubject('Aviation')">
+                        Explore Aviation
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BOTTOM OPTIONS -->
+       <div id="learningOptions" class="learning-buttons">
+
+    <button onclick="goToTheory()">
+        📖 Theory
+    </button>
+
+    <button onclick="goToMCQ()">
+        📝 MCQ
+    </button>
+
+    <button id="codingButton" onclick="goToCoding()">
+        💻 Coding
+    </button>
+
+</div>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <span>Knowledge Today</span>
+
+        <div class="line"></div>
+
+        <span>A Brighter Tomorrow</span>
+
+    </footer>
+
+
+<script>
+let selectedSubject = null;
+
+function selectSubject(subject) {
+    selectedSubject = subject;
+    localStorage.setItem("selectedSubject", subject);
+
+    const learningOptions = document.getElementById("learningOptions");
+    const codingButton = document.getElementById("codingButton");
+
+    learningOptions.style.display = "flex";
+
+    if (subject === "IT") {
+        codingButton.style.display = "inline-block";
+    } else {
+        codingButton.style.display = "none";
+    }
+}
+
+function goToTheory(event) {
+    if (event) event.preventDefault();
+    const subject = selectedSubject || localStorage.getItem("selectedSubject");
+    if (subject === "IT") {
+        window.location.href = "/it-topic?mode=theory";
+    } else if (subject === "Aviation") {
+        window.location.href = "/aviation-topic?mode=theory";
+    }
+}
+
+function goToMCQ(event) {
+    if (event) event.preventDefault();
+
+    const subject = selectedSubject || localStorage.getItem("selectedSubject");
+
+    if (subject === "IT") {
+        window.location.href = "/it-topic";
+    } else if (subject === "Aviation") {
+        window.location.href = "/aviation-topic";
+    }
+}
+
+function goToCoding(event) {
+    if (event) event.preventDefault();
+    const subject = selectedSubject || localStorage.getItem("selectedSubject");
+    if (subject === "IT") {
+        window.location.href = "/it-topic?mode=coding";
+    }
+}
+</script>
+
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="{{ url_for('static', filename='react-navbar.js') }}"></script>
+
+<script src="{{ url_for('static', filename='ai-page-greeting.js', v='10') }}"></script>
+<script src="{{ url_for('static', filename='anti-copy.js') }}"></script>
+<script src="{{ url_for('static', filename='csrf.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='responsive.css', v='2') }}">
+</body>
+
+</html>

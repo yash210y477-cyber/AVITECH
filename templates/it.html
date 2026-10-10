@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AVITECH | IT Technology</title>
+
+
+    <!-- ==============================
+         GOOGLE FONT
+    =============================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+
+    <!-- ==============================
+         DEVICON
+         Proper technology icons
+    =============================== -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
+
+    <style>
+
+        /* =========================================
+           RESET
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================
+           BODY
+        ========================================= */
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: "Inter", sans-serif;
+
+            color: #172033;
+
+            overflow-x: hidden;
+
+            background:
+
+                radial-gradient(
+                    circle at 8% 10%,
+                    rgba(135, 220, 255, 0.30),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 92% 12%,
+                    rgba(195, 170, 255, 0.28),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(150, 255, 210, 0.22),
+                    transparent 35%
+                ),
+
+                #f8fbff;
+        }
+
+
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        nav {
+
+            width: 92%;
+
+            height: 70px;
+
+            margin: 20px auto;
+
+            padding: 0 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background:
+                rgba(255,255,255,0.78);
+
+            backdrop-filter: blur(18px);
+
+            border:
+                1px solid rgba(220,230,242,0.9);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(55,75,110,0.08);
+        }
+
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 24px;
+
+            font-weight: 900;
+
+            letter-spacing: -1px;
+        }
+
+
+        .logo-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7567ff,
+                    #42c9ff
+                );
+
+            color: white;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 8px 20px
+                rgba(95,100,240,0.20);
+        }
+
+
+        .logo span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #665cff,
+                    #00a9ff,
+                    #ff69b4
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+
+        /* =========================================
+           NAV RIGHT
+        ========================================= */
+
+        .nav-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .language {
+
+            padding: 10px 17px;
+
+            border:
+                1px solid #d9e3ef;
+
+            border-radius: 14px;
+
+            background: white;
+
+            color: #263248;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+
+        .language:hover {
+
+            border-color: #8b7cff;
+
+            transform: translateY(-2px);
+        }
+
+
+        .home {
+
+            padding: 10px 18px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background: #172033;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+
+        .home:hover {
+
+            transform: translateY(-2px);
+
+            background: #303a52;
+        }
+
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .main {
+
+            width: 92%;
+
+            max-width: 1250px;
+
+            margin:
+                35px auto 0;
+
+            text-align: center;
+        }
+
+
+
+        /* =========================================
+           BACK BUTTON
+        ========================================= */
+
+        .back {
+
+            display: block;
+
+            width: fit-content;
+
+            margin-bottom: 25px;
+
+            padding: 10px 17px;
+
+            border:
+                1px solid #d6e1ed;
+
+            border-radius: 14px;
+
+            background: white;
+
+            color: #27334a;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 18px
+                rgba(45,60,90,0.06);
+
+            transition: 0.25s;
+        }
+
+
+        .back:hover {
+
+            transform:
+                translateX(-4px);
+
+            border-color:
+                #8a7cff;
+
+            color:
+                #625bf6;
+        }
+
+
+
+        /* =========================================
+           SMALL HEADING
+        ========================================= */
+
+        .mini-title {
+
+            display: inline-block;
+
+            padding: 7px 17px;
+
+            margin-bottom: 16px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(108,99,255,0.10),
+                    rgba(0,190,255,0.10),
+                    rgba(255,105,180,0.10)
+                );
+
+            border:
+                1px solid
+                rgba(120,120,220,0.18);
+
+            font-size: 11px;
+
+            letter-spacing: 3px;
+
+            font-weight: 800;
+
+            color: #77718d;
+
+            box-shadow:
+                0 5px 18px
+                rgba(80,80,150,0.06);
+        }
+
+
+
+        /* =========================================
+           MAIN HEADING
+        ========================================= */
+
+        .hero-heading {
+
+            font-size:
+                clamp(42px, 6vw, 68px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+
+            font-weight: 900;
+
+            color: #20273a;
+
+            margin-bottom: 17px;
+
+            text-shadow:
+                0 5px 20px
+                rgba(70,80,120,0.08);
+        }
+
+
+        .hero-heading span {
+
+            background:
+
+                linear-gradient(
+                    90deg,
+
+                    #655cff 0%,
+
+                    #4da8ff 18%,
+
+                    #3ed9b0 36%,
+
+                    #ffc05c 53%,
+
+                    #ff6fae 72%,
+
+                    #a866ff 90%,
+
+                    #655cff 100%
+                );
+
+            background-size: 300% auto;
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+
+            animation:
+                rainbowMove
+                5s
+                linear
+                infinite;
+
+            filter:
+                drop-shadow(
+                    0 5px 12px
+                    rgba(100,90,220,0.13)
+                );
+        }
+
+
+        @keyframes rainbowMove {
+
+            0% {
+                background-position: 0% center;
+            }
+
+            50% {
+                background-position: 100% center;
+            }
+
+            100% {
+                background-position: 0% center;
+            }
+
+        }
+
+
+
+        /* =========================================
+           SUBTITLE
+        ========================================= */
+
+        .subtitle {
+
+            max-width: 650px;
+
+            margin: auto;
+
+            color: #6c7689;
+
+            font-size: 16px;
+
+            line-height: 1.65;
+        }
+
+
+
+        /* =========================================
+           LANGUAGE AREA
+        ========================================= */
+
+        .language-section {
+
+            width: 100%;
+
+            max-width: 1250px;
+
+            margin:
+                42px auto 0;
+
+            padding:
+                24px 0;
+
+            overflow: hidden;
+
+            border:
+                1.5px solid
+                #d3e0ee;
+
+            border-radius: 28px;
+
+            background:
+                rgba(255,255,255,0.58);
+
+            backdrop-filter:
+                blur(15px);
+
+            box-shadow:
+                0 18px 50px
+                rgba(50,75,110,0.08);
+        }
+
+
+
+        /* =========================================
+           MOVING ROW
+        ========================================= */
+
+        .marquee {
+
+            width: max-content;
+
+            display: flex;
+
+            align-items: center;
+
+            margin:
+                10px auto;
+
+            animation:
+                moveLeft
+                30s
+                linear
+                infinite;
+        }
+
+
+        .marquee.reverse {
+
+            animation:
+                moveRight
+                34s
+                linear
+                infinite;
+        }
+
+
+        .marquee:hover {
+
+            animation-play-state:
+                paused;
+        }
+
+
+
+        /* =========================================
+           ANIMATIONS
+        ========================================= */
+
+        @keyframes moveLeft {
+
+            from {
+                transform:
+                    translateX(0);
+            }
+
+            to {
+                transform:
+                    translateX(-50%);
+            }
+
+        }
+
+
+        @keyframes moveRight {
+
+            from {
+                transform:
+                    translateX(-50%);
+            }
+
+            to {
+                transform:
+                    translateX(0);
+            }
+
+        }
+
+
+
+        /* =========================================
+           TECHNOLOGY CARD
+        ========================================= */
+
+        .tech-card {
+
+            min-width: 125px;
+
+            height: 70px;
+
+            margin:
+                0 7px;
+
+            padding:
+                7px 13px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 5px;
+
+            flex-shrink: 0;
+
+            background:
+                rgba(255,255,255,0.96);
+
+            border:
+                1.5px solid
+                #cbdceb;
+
+            border-radius: 17px;
+
+            box-shadow:
+                0 6px 18px
+                rgba(55,105,160,0.07);
+
+            transition:
+                0.3s ease;
+        }
+
+
+        .tech-card:hover {
+
+            transform:
+                translateY(-6px)
+                scale(1.05);
+
+            border-color:
+                #897cff;
+
+            box-shadow:
+                0 12px 27px
+                rgba(100,90,220,0.15);
+        }
+
+
+        .tech-card i {
+
+            font-size: 26px;
+
+            line-height: 1;
+        }
+
+
+        .tech-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #29354a;
+
+            white-space: nowrap;
+        }
+
+
+
+        /* =========================================
+           ICON COLORS
+        ========================================= */
+
+        .python {
+            color: #3776AB;
+        }
+
+        .java {
+            color: #E76F00;
+        }
+
+        .c {
+            color: #659AD2;
+        }
+
+        .cpp {
+            color: #00599C;
+        }
+
+        .csharp {
+            color: #68217A;
+        }
+
+        .javascript {
+            color: #d6b900;
+        }
+
+        .typescript {
+            color: #3178C6;
+        }
+
+        .html {
+            color: #E34F26;
+        }
+
+        .css {
+            color: #1572B6;
+        }
+
+        .php {
+            color: #777BB4;
+        }
+
+        .ruby {
+            color: #CC342D;
+        }
+
+        .swift {
+            color: #F05138;
+        }
+
+        .kotlin {
+            color: #7F52FF;
+        }
+
+        .go {
+            color: #00ADD8;
+        }
+
+        .rust {
+            color: #CE422B;
+        }
+
+        .dart {
+            color: #0175C2;
+        }
+
+        .r {
+            color: #276DC3;
+        }
+
+        .matlab {
+            color: #E16737;
+        }
+
+        .react {
+            color: #61DAFB;
+        }
+
+        .node {
+            color: #68A063;
+        }
+
+        .mysql {
+            color: #00758F;
+        }
+
+        .git {
+            color: #F05032;
+        }
+
+        .github {
+            color: #24292F;
+        }
+
+        .linux {
+            color: #333333;
+        }
+
+
+
+        /* =========================================
+           BOTTOM CARD
+        ========================================= */
+
+        .start-box {
+
+            width: 90%;
+
+            max-width: 1050px;
+
+            margin:
+                32px auto 45px;
+
+            padding:
+                20px 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            background:
+                rgba(255,255,255,0.84);
+
+            border:
+                1.5px solid
+                #d2dfed;
+
+            border-radius: 21px;
+
+            box-shadow:
+                0 12px 35px
+                rgba(45,65,100,0.07);
+        }
+
+
+        .start-text {
+
+            text-align: left;
+        }
+
+
+        .start-text h3 {
+
+            font-size: 17px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .start-text p {
+
+            font-size: 13px;
+
+            color: #748095;
+        }
+
+
+        .start-btn {
+
+            border: none;
+
+            padding:
+                13px 28px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #665cff,
+                    #00a9ff
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 9px 22px
+                rgba(80,100,230,0.20);
+
+            transition:
+                0.25s;
+        }
+
+
+        .start-btn:hover {
+
+            transform:
+                translateY(-3px)
+                scale(1.03);
+
+            box-shadow:
+                0 14px 28px
+                rgba(80,100,230,0.27);
+        }
+
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media(max-width:700px) {
+
+            nav {
+
+                width: 94%;
+
+                padding:
+                    0 15px;
+            }
+
+
+            .logo {
+
+                font-size: 19px;
+            }
+
+
+            .home {
+
+                display: none;
+            }
+
+
+            .main {
+
+                width: 94%;
+            }
+
+
+            .hero-heading {
+
+                font-size: 38px;
+
+                letter-spacing: -2px;
+            }
+
+
+            .subtitle {
+
+                font-size: 14px;
+            }
+
+
+            .language-section {
+
+                border-radius: 22px;
+            }
+
+
+            .tech-card {
+
+                min-width: 112px;
+
+                height: 64px;
+
+                margin:
+                    0 5px;
+            }
+
+
+            .tech-card i {
+
+                font-size: 23px;
+            }
+
+
+            .tech-name {
+
+                font-size: 11px;
+            }
+
+
+            .start-box {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .start-text {
+
+                text-align: center;
+            }
+
+        }
+
+    
+        /* =========================================
+           SELECTED TECHNOLOGY
+        ========================================= */
+        .tech-card{
+            cursor:pointer;
+            user-select:none;
+            transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+        .tech-card:hover{
+            transform:translateY(-4px) scale(1.02);
+            border-color:#7667ff;
+            box-shadow:0 10px 24px rgba(90,90,220,.14);
+        }
+        .tech-card.selected-tech{
+            border:2px solid #665cff !important;
+            background:linear-gradient(135deg,rgba(103,92,255,.10),rgba(70,190,255,.10),rgba(255,105,180,.08)) !important;
+            box-shadow:0 12px 28px rgba(96,85,235,.18);
+            transform:translateY(-3px) scale(1.025);
+        }
+        .selected-label{
+            margin-top:10px;
+            font-size:13px;
+            font-weight:700;
+            color:#5e5bdc;
+            min-height:20px;
+        }
+
+    </style>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='react-navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='ai-page-greeting.css', v='10') }}">
+
+
+
+
+
+<style id="coding-language-layout">
+body.coding-mode .language-section{
+    width:1050px !important;
+    max-width:calc(100% - 40px) !important;
+    height:220px !important;
+    min-height:220px !important;
+    margin:28px auto 0 !important;
+    padding:20px 0 !important;
+    overflow:hidden !important;
+    box-sizing:border-box !important;
+}
+body.coding-mode .marquee{
+    width:max-content !important;
+    display:flex !important;
+    align-items:center !important;
+    margin:10px 0 !important;
+    will-change:transform !important;
+    flex-shrink:0 !important;
+    animation-duration:18s !important;
+    animation-timing-function:linear !important;
+    animation-iteration-count:infinite !important;
+}
+body.coding-mode .coding-set{
+    display:flex !important;
+    flex:0 0 auto !important;
+    align-items:center !important;
+    gap:0 !important;
+    padding-right:14px !important;
+}
+body.coding-mode .marquee.coding-left{
+    animation-name:codingSlideLeft !important;
+}
+body.coding-mode .marquee.coding-right{
+    animation-name:codingSlideRight !important;
+}
+body.coding-mode .marquee:hover{
+    animation-play-state:paused !important;
+}
+@keyframes codingSlideLeft{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(-50%,0,0);}
+}
+@keyframes codingSlideRight{
+    from{transform:translate3d(-50%,0,0);}
+    to{transform:translate3d(0,0,0);}
+}
+@media(max-width:900px){
+    body.coding-mode .language-section{
+        width:calc(100% - 24px) !important;
+        max-width:none !important;
+        height:190px !important;
+        min-height:190px !important;
+        padding:14px 0 !important;
+    }
+    body.coding-mode .marquee{
+        animation-duration:15s !important;
+    }
+}
+</style>
+
+<style id="exact-instructions-heading-colors">
+/* Match the IT KNOWLEDGE heading to the exact Quiz Instructions title color treatment */
+.hero-heading span{
+    background:linear-gradient(90deg,#163d8f,#3158ed,#a33ee8) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    color:transparent !important;
+    background-size:auto !important;
+    animation:none !important;
+    filter:none !important;
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================= -->
+
+    <div id="react-navbar"></div>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================= -->
+
+    <main class="main">
+
+
+        <button class="back"
+                onclick="history.back()">
+
+            ← Back
+
+        </button>
+
+
+
+        <div class="mini-title">
+
+            CHOOSE YOUR PATH
+
+        </div>
+
+
+
+        <h1 class="hero-heading">
+
+            TEST YOUR
+            <span>IT KNOWLEDGE</span>
+
+        </h1>
+
+
+
+        <p class="subtitle">
+
+            Pick a language or technology,
+            challenge yourself and discover
+            how much you really know.
+
+        </p>
+
+
+
+        <!-- =====================================
+             MOVING TECHNOLOGIES
+        ====================================== -->
+
+        <section class="language-section">
+
+    <!-- ROW 1: 9 technologies -->
+    <div class="marquee">
+<div class="tech-card">
+    <i class="devicon-html5-plain" style="color:#E34F26 !important;"></i>
+    <span class="tech-name">HTML</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-css3-plain" style="color:#1572B6 !important;"></i>
+    <span class="tech-name">CSS</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-javascript-plain" style="color:#F7DF1E !important;"></i>
+    <span class="tech-name">JavaScript</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-bootstrap-plain" style="color:#7952B3 !important;"></i>
+    <span class="tech-name">Bootstrap</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-tailwindcss-original" style="color:#06B6D4 !important;"></i>
+    <span class="tech-name">Tailwind</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-react-original" style="color:#61DAFB !important;"></i>
+    <span class="tech-name">React</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-javascript-plain" style="color:#F7DF1E !important;"></i>
+    <span class="tech-name">Vanilla JS</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-python-plain" style="color:#3776AB !important;"></i>
+    <span class="tech-name">Python</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-java-plain" style="color:#E76F00 !important;"></i>
+    <span class="tech-name">Java</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-html5-plain" style="color:#E34F26 !important;"></i>
+    <span class="tech-name">HTML</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-css3-plain" style="color:#1572B6 !important;"></i>
+    <span class="tech-name">CSS</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-javascript-plain" style="color:#F7DF1E !important;"></i>
+    <span class="tech-name">JavaScript</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-bootstrap-plain" style="color:#7952B3 !important;"></i>
+    <span class="tech-name">Bootstrap</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-tailwindcss-original" style="color:#06B6D4 !important;"></i>
+    <span class="tech-name">Tailwind</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-react-original" style="color:#61DAFB !important;"></i>
+    <span class="tech-name">React</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-javascript-plain" style="color:#F7DF1E !important;"></i>
+    <span class="tech-name">Vanilla JS</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-python-plain" style="color:#3776AB !important;"></i>
+    <span class="tech-name">Python</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-java-plain" style="color:#E76F00 !important;"></i>
+    <span class="tech-name">Java</span>
+</div>
+    </div>
+
+    <!-- ROW 2: 9 technologies -->
+    <div class="marquee reverse">
+<div class="tech-card">
+    <i class="devicon-c-plain" style="color:#659AD2 !important;"></i>
+    <span class="tech-name">C</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-cplusplus-plain" style="color:#00599C !important;"></i>
+    <span class="tech-name">C++</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-csharp-plain" style="color:#68217A !important;"></i>
+    <span class="tech-name">C#</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-dotnetcore-plain" style="color:#512BD4 !important;"></i>
+    <span class="tech-name">.NET</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-php-plain" style="color:#777BB4 !important;"></i>
+    <span class="tech-name">PHP</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-nodejs-plain" style="color:#68A063 !important;"></i>
+    <span class="tech-name">Node.js</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-mysql-plain" style="color:#00758F !important;"></i>
+    <span class="tech-name">MySQL</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-mongodb-plain" style="color:#47A248 !important;"></i>
+    <span class="tech-name">MongoDB</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-git-plain" style="color:#F05032 !important;"></i>
+    <span class="tech-name">Git</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-c-plain" style="color:#659AD2 !important;"></i>
+    <span class="tech-name">C</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-cplusplus-plain" style="color:#00599C !important;"></i>
+    <span class="tech-name">C++</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-csharp-plain" style="color:#68217A !important;"></i>
+    <span class="tech-name">C#</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-dotnetcore-plain" style="color:#512BD4 !important;"></i>
+    <span class="tech-name">.NET</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-php-plain" style="color:#777BB4 !important;"></i>
+    <span class="tech-name">PHP</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-nodejs-plain" style="color:#68A063 !important;"></i>
+    <span class="tech-name">Node.js</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-mysql-plain" style="color:#00758F !important;"></i>
+    <span class="tech-name">MySQL</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-mongodb-plain" style="color:#47A248 !important;"></i>
+    <span class="tech-name">MongoDB</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-git-plain" style="color:#F05032 !important;"></i>
+    <span class="tech-name">Git</span>
+</div>
+    </div>
+
+    <!-- ROW 3: 8 technologies -->
+    <div class="marquee">
+<div class="tech-card">
+    <i class="devicon-oracle-original" style="color:#F80000 !important;"></i>
+    <span class="tech-name">Oracle</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-microsoftsqlserver-plain" style="color:#217346 !important;"></i>
+    <span class="tech-name">Excel</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-microsoftsqlserver-plain" style="color:#217346 !important;"></i>
+    <span class="tech-name">Advanced Excel</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-powerbi-plain" style="color:#F2C811 !important;"></i>
+    <span class="tech-name">Power BI</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-windows8-original" style="color:#00529B !important;"></i>
+    <span class="tech-name">Tally</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-visualstudio-plain" style="color:#68217A !important;"></i>
+    <span class="tech-name">VBA</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-google-plain" style="color:#4285F4 !important;"></i>
+    <span class="tech-name">Digital Marketing</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-codepen-plain" style="color:#111827 !important;"></i>
+    <span class="tech-name">BSS</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-oracle-original" style="color:#F80000 !important;"></i>
+    <span class="tech-name">Oracle</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-microsoftsqlserver-plain" style="color:#217346 !important;"></i>
+    <span class="tech-name">Excel</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-microsoftsqlserver-plain" style="color:#217346 !important;"></i>
+    <span class="tech-name">Advanced Excel</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-powerbi-plain" style="color:#F2C811 !important;"></i>
+    <span class="tech-name">Power BI</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-windows8-original" style="color:#00529B !important;"></i>
+    <span class="tech-name">Tally</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-visualstudio-plain" style="color:#68217A !important;"></i>
+    <span class="tech-name">VBA</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-google-plain" style="color:#4285F4 !important;"></i>
+    <span class="tech-name">Digital Marketing</span>
+</div>
+<div class="tech-card">
+    <i class="devicon-codepen-plain" style="color:#111827 !important;"></i>
+    <span class="tech-name">BSS</span>
+</div>
+    </div>
+
+</section>
+
+
+
+        <!-- =========================================
+             START TEST
+        ========================================= -->
+
+        <div class="start-box">
+
+
+            <div class="start-text">
+
+                <h3>
+                    💡 Not sure where to start?
+                </h3>
+
+                <p>
+                    Pick a technology and challenge yourself.
+                </p>
+                <div class="selected-label">No technology selected</div>
+
+            </div>
+
+
+            <button class="start-btn"
+                    onclick="startTest()">
+
+                Start Test →
+
+            </button>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+
+    <script>
+
+
+        function goHome() {
+
+            window.location.href =
+                "/";
+
+        }
+
+
+        let selectedSubject = "";
+
+        function selectTechnology(card) {
+            const subject = card.querySelector(".tech-name")?.textContent.trim();
+            if (!subject) return;
+
+            selectedSubject = subject;
+
+            document.querySelectorAll(".tech-card").forEach(c => {
+                c.classList.toggle(
+                    "selected-tech",
+                    c.querySelector(".tech-name")?.textContent.trim() === selectedSubject
+                );
+            });
+
+            const label = document.querySelector(".selected-label");
+            if (label) label.textContent = `Selected: ${selectedSubject}`;
+
+            const btn = document.querySelector(".start-btn");
+            if (btn) btn.textContent = `Start ${selectedSubject} Test →`;
+        }
+
+        // All three moving rows use the same technology cards.
+        // Clicking either duplicate selects that technology.
+        document.querySelectorAll(".tech-card").forEach(card => {
+            card.addEventListener("click", () => selectTechnology(card));
+        });
+
+        const pageMode = new URLSearchParams(window.location.search).get("mode") || "mcq";
+        const theoryMode = pageMode === "theory";
+        const codingMode = pageMode === "coding";
+        if (codingMode) document.body.classList.add("coding-mode");
+
+        if (theoryMode) {
+            document.title = "AVITECH | Theory";
+        } else if (codingMode) {
+            // CODING MODE:
+            // Exactly 15 unique languages/topics.
+            // Row 1 = 7 topics, Row 2 = 8 topics.
+            // The second visual set is only for seamless marquee movement.
+            const codingTopics = [
+                "HTML", "CSS", "JavaScript", "Bootstrap", "Tailwind", "React",
+                "Vanilla JS", "Python", "Java", "C", "C++", "C#", ".NET", "PHP", "Node.js"
+            ];
+
+            const allCards = Array.from(document.querySelectorAll(".tech-card"));
+            const cardByName = new Map();
+
+            allCards.forEach(card => {
+                const name = card.querySelector(".tech-name")?.textContent.trim();
+                if (codingTopics.includes(name) && !cardByName.has(name)) {
+                    cardByName.set(name, card.cloneNode(true));
+                }
+            });
+
+            const uniqueCards = codingTopics
+                .map(name => cardByName.get(name))
+                .filter(Boolean);
+
+            const rows = Array.from(document.querySelectorAll(".marquee"));
+
+            // Coding has exactly TWO moving rows.
+            const codingRows = rows.slice(0, 2);
+
+            // Remove the unused third row.
+            rows.slice(2).forEach(row => {
+                row.innerHTML = "";
+                row.style.display = "none";
+            });
+
+            const row1Cards = uniqueCards.slice(0, 7);
+            const row2Cards = uniqueCards.slice(7, 15);
+
+            [row1Cards, row2Cards].forEach((rowCards, rowIndex) => {
+                const row = codingRows[rowIndex];
+                if (!row) return;
+
+                row.innerHTML = "";
+                row.style.display = "flex";
+                row.classList.remove("coding-left", "coding-right");
+                row.classList.add(rowIndex === 0 ? "coding-left" : "coding-right");
+
+                // First visual set.
+                const set1 = document.createElement("div");
+                set1.className = "coding-set";
+
+                rowCards.forEach(card => {
+                    set1.appendChild(card.cloneNode(true));
+                });
+
+                // Second identical visual set = seamless movement only.
+                const set2 = document.createElement("div");
+                set2.className = "coding-set";
+                set2.setAttribute("aria-hidden", "true");
+
+                rowCards.forEach(card => {
+                    set2.appendChild(card.cloneNode(true));
+                });
+
+                row.appendChild(set1);
+                row.appendChild(set2);
+            });
+
+            // Reattach selection to the visible coding cards.
+            document.querySelectorAll(".tech-card").forEach(card => {
+                card.addEventListener("click", () => selectTechnology(card));
+            });
+        }
+
+        if (theoryMode || codingMode) {
+            const heading = document.querySelector(".hero-heading");
+            const subtitle = document.querySelector(".subtitle");
+            const start = document.querySelector(".start-btn");
+
+            if (theoryMode) {
+                if (heading) heading.innerHTML = "CHOOSE YOUR <span>THEORY LANGUAGE</span>";
+                if (subtitle) subtitle.textContent = "Choose a language and start your theory test.";
+                if (start) start.textContent = "Start Theory Test →";
+            } else {
+                if (heading) heading.innerHTML = "CHOOSE YOUR <span>CODING LANGUAGE</span>";
+                if (subtitle) subtitle.textContent = "Choose a programming language and start your coding test.";
+                if (start) start.textContent = "Start Coding Test →";
+            }
+        }
+
+        function startTest() {
+            if (!selectedSubject) {
+                alert("Please select a language or technology first.");
+                return;
+            }
+            if (theoryMode) {
+                // Every technology shown on the IT language selection page has
+                // a matching key in It_theory_questions.json. Keep the exact
+                // selected name so all 26 theory banks can be opened.
+                window.location.href = "/theory?language=" + encodeURIComponent(selectedSubject);
+                return;
+            }
+            if (codingMode) {
+                window.location.href = "/coding?language=" + encodeURIComponent(selectedSubject);
+                return;
+            }
+            window.location.href =
+                "/quiz?bank=it&subject=" + encodeURIComponent(selectedSubject);
+        }
+
+    </script>
+
+
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="{{ url_for('static', filename='react-navbar.js') }}"></script>
+
+<script src="{{ url_for('static', filename='ai-page-greeting.js', v='10') }}"></script>
+<script src="{{ url_for('static', filename='anti-copy.js') }}"></script>
+<script src="{{ url_for('static', filename='csrf.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='responsive.css', v='2') }}">
+</body>
+
+</html>

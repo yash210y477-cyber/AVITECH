@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local/generated proctoring model weights
+static/models/coco-ssd/group1-shard*

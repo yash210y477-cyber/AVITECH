@@ -1,0 +1,556 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #ffffff;
+    color: #10233f;
+}
+
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    background: white;
+
+    border-bottom: 1px solid #e7edf5;
+
+    box-shadow: 0 3px 15px rgba(20, 65, 110, 0.07);
+}
+
+
+/* LOGO */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #a008ff,
+        #5b3dd4
+    );
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 23px;
+
+    box-shadow: 0 5px 15px rgba(0, 160, 255, 0.25);
+}
+
+.logo h2 {
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.logo h2 span {
+    color: #7b3ce6;
+}
+
+.logo p {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #8090a5;
+}
+
+
+/* NAVIGATION */
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4c5d73;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links .active {
+    color: #7e41e0;
+}
+
+
+/* LOGIN */
+
+.login-btn {
+    border: 1px solid #d5e4f4;
+
+    background: white;
+
+    padding: 10px 22px;
+
+    border-radius: 25px;
+
+    color: #173552;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #078cff;
+    color: white;
+}
+
+
+/* ================= MAIN ================= */
+
+main {
+    min-height: calc(100vh - 82px);
+
+    padding: 55px 7% 35px;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(0, 153, 255, 0.07),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(0, 200, 255, 0.06),
+            transparent 25%
+        );
+}
+
+
+/* HEADING */
+
+.small-heading {
+    font-size: 13px;
+
+    letter-spacing: 6px;
+
+    color: #7890a8;
+
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: clamp(40px, 5vw, 62px);
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    color: #132b48;
+}
+
+h1 span {
+    background: linear-gradient(
+        90deg,
+        #0b46bc,
+        #6A0DAD
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    margin-top: 12px;
+
+    color: #6e7f93;
+
+    font-size: 16px;
+}
+
+
+/* ================= SUBJECT CARDS ================= */
+
+.subjects {
+
+    max-width: 1100px;
+
+    margin: 45px auto 0;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 28px;
+}
+
+
+/* CARD */
+
+.subject-card {
+
+    background: white;
+
+    border: 1px solid #dfeaf5;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 12px 35px rgba(31, 91, 140, 0.10);
+
+    transition: 0.35s;
+
+    text-align: left;
+}
+
+.subject-card:hover {
+
+    transform: translateY(-8px);
+
+    border-color: #4ebcff;
+
+    box-shadow:
+        0 18px 45px rgba(0, 153, 255, 0.18);
+}
+
+
+/* IMAGE */
+
+.image-container {
+
+    height: 245px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.image-container img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: 0.5s;
+}
+
+.subject-card:hover img {
+
+    transform: scale(1.05);
+}
+
+
+/* IMAGE LABEL */
+
+.image-label {
+
+    position: absolute;
+
+    bottom: 15px;
+    left: 18px;
+
+    background: rgba(7, 31, 55, 0.85);
+
+    color: white;
+
+    padding: 7px 15px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+}
+
+
+/* CARD CONTENT */
+
+.card-content {
+
+    padding: 25px 27px 27px;
+}
+
+.card-content h2 {
+
+    font-size: 25px;
+
+    color: #102b48;
+
+    margin-bottom: 8px;
+}
+
+.card-content p {
+
+    color: #718196;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    min-height: 45px;
+}
+
+
+/* START BUTTON */
+
+.start-btn {
+
+    margin-top: 20px;
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: linear-gradient(
+        90deg,
+        #6A0DAD,
+        #9B5DE5
+    );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(0, 153, 255, 0.22);
+
+    transition: 0.3s;
+}
+
+.start-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(0, 153, 255, 0.32);
+}
+
+.start-btn span {
+
+    margin-left: 8px;
+
+    font-size: 18px;
+}
+
+
+/* ================= BOTTOM BUTTONS ================= */
+
+.bottom-section {
+
+    margin-top: 35px;
+}
+
+.bottom-section p {
+
+    color: #8291a3;
+
+    font-size: 13px;
+
+    margin-bottom: 12px;
+}
+
+.learning-buttons {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+}
+
+.learning-buttons button {
+
+    border: 1px solid #cbddec;
+
+    background: white;
+
+    color: #23415e;
+
+    padding: 9px 22px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.learning-buttons button:hover {
+
+    background: #087eff;
+
+    color: white;
+
+    border-color: #087eff;
+
+    transform: translateY(-2px);
+}
+
+.learning-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* Hidden until a subject is selected */
+#learningOptions {
+    display: none;
+}
+
+.learning-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.learning-buttons button {
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: 1px solid #d8c7ed;
+    background: white;
+    color: #6A0DAD;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.learning-buttons button:hover {
+    background: linear-gradient(
+        90deg,
+        #6A0DAD,
+        #9B5DE5
+    );
+    color: white;
+}
+
+
+/* ================= FOOTER ================= */
+
+footer {
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    color: #9baabd;
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+footer .line {
+
+    width: 45px;
+
+    height: 1px;
+
+    background: #b8c9d9;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 800px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    main {
+        padding: 40px 5% 30px;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    .subjects {
+        grid-template-columns: 1fr;
+    }
+
+    .image-container {
+        height: 220px;
+    }
+}
+
+
+@media (max-width: 450px) {
+
+    .login-btn {
+        padding: 8px 14px;
+    }
+
+    .logo h2 {
+        font-size: 16px;
+    }
+
+    .logo p {
+        font-size: 6px;
+    }
+
+    .learning-buttons button {
+        padding: 8px 17px;
+    }
+}
+
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 24px 24px 0 0;
+}
+

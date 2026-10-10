@@ -1,0 +1,73 @@
+<!doctype html><html lang="en"><head>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/logo.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}"><meta charset="UTF-8"><meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>AVITECH | AI Test</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}?v=explanation-detail10">
+<link rel="stylesheet" href="{{ url_for('static', filename='react-navbar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='ai-page-greeting.css', v='10') }}">
+<style>
+
+/* Integrated eye-detection / proctoring panel */
+.proctor-panel{position:fixed;right:18px;bottom:18px;z-index:1000;width:230px;background:rgba(10,18,35,.94);color:#fff;border:1px solid rgba(120,170,255,.25);border-radius:16px;padding:10px;box-shadow:0 16px 40px rgba(0,0,0,.28);backdrop-filter:blur(12px)}
+.proctor-head{display:flex;justify-content:space-between;gap:8px;font-size:10px;font-weight:800;letter-spacing:.5px;margin-bottom:8px}.proctor-head span:last-child{font-weight:600;opacity:.75;text-transform:none}
+#proctorVideo{display:block;width:100%;height:135px;object-fit:cover;border-radius:11px;background:#050811;transform:scaleX(-1)}
+.proctor-warning{min-height:0;color:#ffb4b4;font-size:11px;line-height:1.35;margin-top:6px}.proctor-warning.show{padding:7px;border-radius:8px;background:rgba(255,70,90,.12)}
+.proctor-stats{display:flex;justify-content:space-between;margin-top:7px;font-size:10px;opacity:.82}#objectDetectionBadge{margin-top:7px;padding:6px 8px;border-radius:8px;font-size:10.5px;line-height:1.35;font-weight:700;background:rgba(255,70,90,.16);color:#ffb4b4;border:1px solid rgba(255,120,140,.35)}#objectDetectionBadge[hidden]{display:none}
+.test-over-modal{position:fixed;inset:0;z-index:3000;display:grid;place-items:center;background:rgba(11,18,34,.72);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.test-over-modal[hidden]{display:none}
+.test-over-card{width:min(472px,90vw);padding:36px 38px 34px;border-radius:23px;text-align:center;background:rgba(255,255,255,.98);color:#183873;box-shadow:0 30px 100px rgba(0,0,0,.32);border:1px solid rgba(224,231,242,.95)}
+.test-over-icon{width:68px;height:68px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:#fff0f3;color:#ff3e5d;font-size:34px;font-weight:900;line-height:1}
+.test-over-card h2{margin:0 0 7px;color:#183873;font-size:29px;line-height:1.15;font-weight:900;letter-spacing:-.5px}
+.test-over-card p{margin:0 0 10px;color:#ff3858;font-size:17px;font-weight:850}
+.test-over-card small{display:block;color:#7385a1;font-size:14px;line-height:1.45}
+.proctor-terminated .quiz,.proctor-terminated .controls{filter:blur(1px);pointer-events:none}
+@media(max-width:700px){.proctor-panel{right:10px;bottom:10px;width:180px}.proctor-panel #proctorVideo{height:105px}}
+</style></head><body><div id="react-navbar"></div><div id="proctorPanel" class="proctor-panel">
+  <div class="proctor-head"><span>● PROCTORING</span><span id="proctorStatus">Starting camera…</span></div>
+  <video id="proctorVideo" autoplay muted playsinline></video>
+  <div id="proctorWarning" class="proctor-warning" aria-live="assertive"></div>
+  <div id="objectDetectionBadge" role="status" hidden></div>
+  <div class="proctor-stats">
+    <span>Face: <b id="faceCount">—</b></span>
+    <span>Looking away: <b id="lookCount">0/2</b></span>
+  </div>
+</div>
+<div id="testOverModal" class="test-over-modal" hidden>
+  <div class="test-over-card">
+    <div class="test-over-icon">⚠</div>
+    <h2>Test Over</h2>
+    <p>Suspicious activities detected</p>
+    <small id="terminationReason"></small>
+  </div>
+</div><main><section class="quiz">
+<article>
+<div class="question-row">
+  <h3 id="question">Question 1: Loading...</h3>
+  <div class="question-meta"><div class="timer" data-placement="above-counter"><strong id="time">01:00</strong></div><strong id="count">1 / 15</strong></div>
+</div>
+<p>Choose one answer</p><div id="options"></div>
+<div class="voice-row voice-status-row">
+  <span id="voiceStatus" aria-live="polite"></span>
+</div>
+</article><div class="controls"><button id="fifty">👥 &nbsp;50-50</button><button id="skip">|◀ &nbsp; Skip</button><button id="hint">🔄 &nbsp; Change the Question</button><button id="mic" class="voice-mic" type="button" aria-label="Answer by microphone" title="Answer by microphone">🎙️</button><button class="next" id="next">Submit Answer &nbsp; →</button></div><div class="explain" id="explainBox">
+<b id="resultIcon">💡</b>
+<div class="result-content">
+<h3 id="resultTitle">Explanation of question</h3>
+<div id="answerReview"></div>
+<div class="result-divider"></div>
+<h4 id="explanationHeading">Explanation:</h4>
+<p id="feedback">Your answer will be evaluated by AI and you'll get feedback here.</p>
+</div>
+</div></section></main><script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+<script>window.tf = window.faceapi && window.faceapi.tf;</script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2/dist/coco-ssd.min.js"></script>
+<script src="{{ url_for('static', filename='proctoring.js', v='permission-fast-20261010') }}"></script>
+<script src="{{ url_for('static', filename='quiz.js') }}?v=attempt-identity-fix-20261009"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="{{ url_for('static', filename='react-navbar.js') }}"></script>
+
+<script src="{{ url_for('static', filename='ai-page-greeting.js', v='10') }}"></script>
+<script src="{{ url_for('static', filename='anti-copy.js') }}"></script>
+<script src="{{ url_for('static', filename='csrf.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='responsive.css', v='2') }}">
+</body></html>
