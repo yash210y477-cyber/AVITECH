@@ -4,3 +4,12 @@ __pycache__/
 
 # Local/generated proctoring model weights
 static/models/coco-ssd/group1-shard*
+
+# Secrets / local data
+.env
+*.db
+private/
+
+# Stray pip downloads (dependencies are listed in requirements.txt)
+*.whl
+*.tar.gz

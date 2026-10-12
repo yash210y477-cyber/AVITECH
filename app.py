@@ -117,14 +117,19 @@ def ensure_database():
             "MySQL password is missing. Set AVITECH_DB_PASSWORD in the environment "
             "(AVITECH_DB_PASSWORD is required)."
         )
-    conn = mysql.connector.connect(**mysql_config(include_database=False))
-    cur = conn.cursor()
-    cur.execute(
-        f"CREATE DATABASE IF NOT EXISTS `{MYSQL_DATABASE}` "
-        "CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
-    )
-    cur.close()
-    conn.close()
+    try:
+        conn = mysql.connector.connect(**mysql_config(include_database=False))
+        cur = conn.cursor()
+        cur.execute(
+            f"CREATE DATABASE IF NOT EXISTS `{MYSQL_DATABASE}` "
+            "CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+        )
+        cur.close()
+        conn.close()
+    except mysql.connector.Error as exc:
+        # Shared hosts (e.g. PythonAnywhere) create the database from a dashboard
+        # and may not allow CREATE DATABASE. If it already exists, carry on.
+        app.logger.warning("Skipping CREATE DATABASE (%s); assuming it already exists.", exc)
 
 
 def get_db():
