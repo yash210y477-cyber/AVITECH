@@ -12,7 +12,9 @@ import shutil
 from mysql.connector import pooling
 from coding_evaluator import evaluate_code
 
-app = Flask(__name__)
+@app.route("/health")
+def health():
+    return {"status": "ok"}, 200
 # Never commit a production session secret. Set AVITECH_SECRET_KEY in the environment.
 app.secret_key = os.environ.get("AVITECH_SECRET_KEY")
 if not app.secret_key:
