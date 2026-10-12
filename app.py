@@ -12,6 +12,9 @@ import shutil
 from mysql.connector import pooling
 from coding_evaluator import evaluate_code
 
+# Create the Flask application before registering routes or configuring it.
+app = Flask(__name__)
+
 @app.route("/health")
 def health():
     return {"status": "ok"}, 200
