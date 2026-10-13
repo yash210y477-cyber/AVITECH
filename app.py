@@ -795,7 +795,8 @@ def attempt_finish():
                 bank_questions = load_bank(bank)
                 if subject:
                     bank_questions = [q for q in bank_questions if str(q.get("topic") or "").strip() == subject]
-                answer_field = "answer"
+                # Aviation MCQs use `correctAnswer`; IT MCQs use `answer`.
+                answer_field = "correctAnswer" if bank == "aviation" else "answer"
 
             # Some of the bundled question banks do not contain explicit IDs.
             # Build both ID and normalized-question-text indexes so those questions

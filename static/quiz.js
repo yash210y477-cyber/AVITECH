@@ -1,4 +1,8 @@
 
+function csrfJsonHeaders(){
+  const token=document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+  return {'Content-Type':'application/json','X-CSRF-Token':token};
+}
 let lifelinesLockedAfterSubmit = false;
 function escapeHtml(v){return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
 const banks={it:'/static/data/It_mcq_questions.json',aviation:'/static/data/aviation_mcq_questions.json'};
@@ -131,7 +135,7 @@ async function start(){
   try{
     const attemptResponse=await fetch('/api/attempt/start',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:csrfJsonHeaders(),
       body:JSON.stringify({
         bank,
         subject:selectedSubject || null,
@@ -161,7 +165,7 @@ async function start(){
         // detection.
         await fetch('/api/attempt/finish',{
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers:csrfJsonHeaders(),
           body:JSON.stringify({
             attempt_id:attemptId,
             bank,
@@ -513,7 +517,7 @@ async function finishTest(reason){
     try{
       const saveResponse=await fetch('/api/attempt/finish',{
         method:'POST',
-        headers:{'Content-Type':'application/json'},
+        headers:csrfJsonHeaders(),
         body:JSON.stringify({
           attempt_id:attemptId,
           bank,
