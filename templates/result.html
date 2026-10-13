@@ -521,18 +521,41 @@ function renderReviews(qs, terminated=false, testType=""){
 }
 function retryTest(){
   const r=getResult()||{};
-  const b=r.bank || (/aviation/i.test(String(r.technology||"")) ? "aviation" : "it");
-  const subject=r.subject || (/^AVITECH\s+/i.test(String(r.technology||"")) ? String(r.technology).replace(/^AVITECH\s+/i,"").trim() : "");
+  const technology=String(r.technology||"").trim();
+  const savedBank=String(r.bank||"").trim().toLowerCase();
+  // Resolve the test bank from the report label first; fall back to saved metadata.
+  const isAviation=/aviation/i.test(technology) || savedBank==="aviation";
+  const b=isAviation ? "aviation" : "it";
+  const testType=String(r.testType||r.test_type||"MCQ").trim().toLowerCase();
+
+  // Preserve the exact subject/language selected for this attempt. If older result
+  // data lacks subject, derive it from the report title (e.g. "AVITECH C", "AVITECH SQL").
+  let subject=String(r.subject||r.language||"").trim();
+  if(!subject && technology && !/aviation/i.test(technology)){
+    subject=technology.replace(/^AVITECH\s+/i,"").trim();
+  }
+
+  const aviationTopics=[
+    "Aviation Fundamentals","Aircraft & Aircraft Systems","Flight Operations",
+    "Airport Management","Aviation Safety","Aviation Security",
+    "Aviation Regulations & Law","Airline Operations","Ground Handling","Cargo",
+    "Aviation Communication","Human Factors in Aviation","Emergency Procedures",
+    "Aviation General Knowledge","Cabin Crew Duties and Responsibilities","Aircraft Types"
+  ];
+  if(isAviation && !aviationTopics.includes(subject)) subject="";
   localStorage.removeItem("quizResult");
-  if(r.testType === "Coding") {
+
+  if(testType==="coding"){
     const url=new URL("/coding",window.location.origin);
     if(subject) url.searchParams.set("language",subject);
     location.href=url.toString();
     return;
   }
-  const url=new URL(r.testType === "Theory" ? "/theory" : "/quiz",window.location.origin);
+
+  const isTheory=testType==="theory";
+  const url=new URL(isTheory?"/theory":"/quiz",window.location.origin);
   url.searchParams.set("bank",b);
-  if(subject) url.searchParams.set(r.testType === "Theory" ? "subject" : "subject",subject);
+  if(subject) url.searchParams.set("subject",subject);
   location.href=url.toString();
 }
 function exploreMoreTests(){
