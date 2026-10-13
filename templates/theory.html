@@ -7,7 +7,7 @@
 .answer-section{margin-top:23px}
 .answer-title{font-size:17px;font-weight:800;color:#15346f;margin-bottom:10px}
 /* Exact original textarea treatment — do not alter the written-answer area. */
-.answer-section textarea{width:100%;min-height:120px;resize:vertical;border:2px solid #e2e8f0;border-radius:14px;padding:15px;font-family:Arial,sans-serif;font-size:16px;outline:none;background:#fff}
+.answer-section textarea{display:block;width:100%;min-height:120px;resize:vertical;border:2px solid #e2e8f0;border-radius:14px;padding:15px;font-family:Arial,sans-serif;font-size:16px;line-height:1.5;outline:none;background:#fff;box-sizing:border-box;-webkit-appearance:none;-webkit-user-select:text;user-select:text;touch-action:manipulation;pointer-events:auto}
 .answer-section textarea:focus{border-color:#2563eb}
 .answer-section textarea:disabled{background:#f1f5f9;cursor:not-allowed}
 .record-section{margin-top:18px;padding:20px;background:rgba(255,255,255,.55);border:1px solid #d6e3f3;border-radius:17px}
@@ -342,16 +342,36 @@ function resetExplanation(){
 
 function speak(text){
   return new Promise(resolve=>{
-    if(!("speechSynthesis" in window)){
+    if(!("speechSynthesis" in window) || typeof window.SpeechSynthesisUtterance === "undefined"){
       resolve(); return;
     }
-    speechSynthesis.cancel();
-    const utter=new SpeechSynthesisUtterance(text);
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    const spokenText=String(text || "");
+    const utter=new SpeechSynthesisUtterance(spokenText);
+    utter.lang="en-IN";
     utter.rate=0.95;
     utter.pitch=1;
-    utter.onend=()=>resolve();
-    utter.onerror=()=>resolve();
-    speechSynthesis.speak(utter);
+    let settled=false;
+    let watchdog=null;
+    const finish=()=>{
+      if(settled) return;
+      settled=true;
+      if(watchdog) clearTimeout(watchdog);
+      resolve();
+    };
+    utter.onend=finish;
+    utter.onerror=finish;
+    // iOS Safari can omit speech end/error callbacks. Only then use this
+    // estimate to release the answer field rather than leaving it disabled.
+    const words=spokenText.trim().split(/\s+/).filter(Boolean).length;
+    watchdog=setTimeout(finish,Math.max(10000,Math.ceil(words*60000/(145*0.95))+6000));
+    try{
+      window.speechSynthesis.speak(utter);
+      window.speechSynthesis.resume();
+    }catch(err){
+      console.warn("Theory question speech could not start:",err);
+      finish();
+    }
   });
 }
 

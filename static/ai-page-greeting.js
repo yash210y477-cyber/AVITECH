@@ -27,6 +27,15 @@ let hasSpoken=false;
 let speaking=false;
 
 function speak(done){
+  // On the assessment page, the question reader owns speech output. The generic
+  // greeting must not cancel or overlap the question voice (especially on iOS).
+  if(key==='quiz'){
+    hasSpoken=true;
+    document.documentElement.dataset.avitechGreetingReady='1';
+    window.dispatchEvent(new CustomEvent('avitech-greeting-done'));
+    if(typeof done==='function') done();
+    return;
+  }
   if(hasSpoken){
     if(typeof done==='function') done();
     return;

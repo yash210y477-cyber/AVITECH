@@ -564,25 +564,25 @@ function speakRobot(text,onDone){
   speakRobotSequence([String(text)], onDone);
 }
 
+let robotSpeechRunId=0;
 function speakRobotSequence(parts,onDone){
   const queue=(parts||[]).map(x=>String(x)).filter(Boolean);
+  const runId=++robotSpeechRunId;
 
-  if(!queue.length){
-    if(typeof onDone==='function') onDone();
-    return;
-  }
-
-  if(!('speechSynthesis' in window)){
+  if(!queue.length || !('speechSynthesis' in window)){
     if(typeof onDone==='function') onDone();
     return;
   }
 
   try{
-    speechSynthesis.cancel();
-
+    // Cancel only the previous robot utterance; resume engines that can remain paused
+    // on mobile Safari after a page transition or an interrupted utterance.
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.resume();
     let index=0;
 
     const speakNext=()=>{
+      if(runId!==robotSpeechRunId) return;
       if(index>=queue.length){
         document.body.classList.remove('robot-speaking');
         const s=$('voiceStatus');
@@ -598,23 +598,40 @@ function speakRobotSequence(parts,onDone){
       u.pitch=1.02;
       u.volume=1;
 
+      // Prefer an installed English voice. Some mobile browsers have no en-IN voice
+      // and can fail silently when a locale is requested without a matching voice.
+      const voices=window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+      const voice=voices.find(v=>/^en-IN$/i.test(v.lang)) ||
+                  voices.find(v=>/^en[-_]/i.test(v.lang));
+      if(voice) u.voice=voice;
+
+      let settled=false;
+      const finishPart=()=>{
+        if(settled || runId!==robotSpeechRunId) return;
+        settled=true;
+        clearTimeout(watchdog);
+        setTimeout(speakNext,80);
+      };
+      // Only a safety fallback for browsers that never dispatch speech events.
+      // It estimates the utterance duration; normal browsers still unlock on onend.
+      const wordCount=spokenText.trim().split(/\s+/).filter(Boolean).length;
+      const watchdog=setTimeout(finishPart,Math.max(7000,Math.ceil(wordCount*60000/(150*0.90))+5000));
+
       u.onstart=()=>{
+        if(runId!==robotSpeechRunId) return;
         document.body.classList.add('robot-speaking');
         const s=$('voiceStatus');
         if(s) s.textContent='Robot speaking...';
       };
+      u.onend=finishPart;
+      u.onerror=finishPart;
 
-      u.onend=()=>{
-        // Speak the next part only after this part is completely finished.
-        setTimeout(speakNext,80);
-      };
-
-      u.onerror=()=>{
-        // Never leave the quiz permanently locked if the browser voice engine errors.
-        speakNext();
-      };
-
-      speechSynthesis.speak(u);
+      try{
+        window.speechSynthesis.speak(u);
+        window.speechSynthesis.resume();
+      }catch(e){
+        finishPart();
+      }
     };
 
     speakNext();
